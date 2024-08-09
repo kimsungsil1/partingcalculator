@@ -403,9 +403,6 @@
                     input.type = "radio";
                     input.name = "q" + (index + 1);
                     input.value = option.value;
-                    input.addEventListener('change', function() {
-                        showFeedbackMessage(option.value);
-                    });
                     label.appendChild(input);
                     label.appendChild(document.createTextNode(" " + option.label));
                     fieldset.appendChild(label);
@@ -418,21 +415,6 @@
             // 폼이 동적으로 추가된 후 진행 바도 업데이트
             updateProgressBar();
         });
-
-        // 피드백 메시지 표시
-        function showFeedbackMessage(value) {
-            let message = "";
-            if (value >= 40) {
-                message = "많이 힘드시겠지만, 조금씩 나아질 거예요. 혼자가 아닙니다.";
-            } else if (value >= 30) {
-                message = "현재의 감정은 자연스러운 반응입니다. 이 과정을 통해 더 강해질 거예요.";
-            } else if (value >= 20) {
-                message = "좋은 방향으로 나아가고 있습니다. 계속 힘내세요!";
-            } else {
-                message = "긍정적인 변화를 이루어내고 계십니다. 훌륭합니다!";
-            }
-            alert(message);
-        }
 
         // 다음 질문 표시
         function showNextQuestion() {

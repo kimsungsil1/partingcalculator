@@ -39,10 +39,14 @@
         .question input[type="radio"] {
             margin-right: 10px;
         }
-        .result {
+        .result, .advice {
             margin-top: 30px;
             font-weight: bold;
             font-size: 1.2em;
+            text-align: left;
+        }
+        .advice {
+            color: #28a745;
         }
         button {
             padding: 12px 24px;
@@ -61,13 +65,13 @@
 </head>
 <body>
     <div class="container">
-        <!-- 메인 페이지 상단에 문구 추가 -->
         <div class="header">
             이 서비스는 이별 후 아픔이 언제쯤 옅어질지 예측해, 막연한 고통 속에서 벗어날 수 있도록 도와줍니다.
         </div>
 
         <!-- 설문 폼 -->
         <form id="surveyForm">
+            <!-- 기존 질문들 -->
             <div class="question">
                 <label>관계의 길이는 얼마나 되었나요?</label>
                 <input type="radio" name="q1" value="10"> 1년 미만<br>
@@ -82,30 +86,7 @@
                 <input type="radio" name="q2" value="10"> 별로 충격적이지 않았다
             </div>
 
-            <div class="question">
-                <label>지금 얼마나 자주 그 사람을 생각하나요?</label>
-                <input type="radio" name="q3" value="30"> 매일<br>
-                <input type="radio" name="q3" value="20"> 가끔<br>
-                <input type="radio" name="q3" value="10"> 거의 생각하지 않는다
-            </div>
-
-            <div class="question">
-                <label>이별의 원인은 무엇인가요?</label>
-                <input type="radio" name="q4" value="30"> 신뢰 문제<br>
-                <input type="radio" name="q4" value="20"> 성격 차이<br>
-                <input type="radio" name="q4" value="10"> 외부 요인 (가족, 일, 거리 등)<br>
-                <input type="radio" name="q4" value="10"> 기타
-            </div>
-
-            <div class="question">
-                <label>이별 후 현재 얼마나 시간이 지났나요?</label>
-                <input type="radio" name="q5" value="10"> 1주 이내<br>
-                <input type="radio" name="q5" value="20"> 1개월 이내<br>
-                <input type="radio" name="q5" value="30"> 3개월 이내<br>
-                <input type="radio" name="q5" value="40"> 6개월 이내<br>
-                <input type="radio" name="q5" value="50"> 1년 이상
-            </div>
-
+            <!-- 추가 질문들 -->
             <div class="question">
                 <label>현재 감정 상태를 어떻게 표현하시겠어요?</label>
                 <input type="radio" name="q6" value="50"> 매우 슬프다<br>
@@ -113,14 +94,6 @@
                 <input type="radio" name="q6" value="20"> 평온하다<br>
                 <input type="radio" name="q6" value="10"> 다소 행복하다<br>
                 <input type="radio" name="q6" value="0"> 매우 행복하다
-            </div>
-
-            <div class="question">
-                <label>이별 후 주변 사람들과의 관계는 어떻게 변했나요?</label>
-                <input type="radio" name="q7" value="10"> 크게 달라지지 않았다<br>
-                <input type="radio" name="q7" value="20"> 더 가까워졌다<br>
-                <input type="radio" name="q7" value="30"> 조금 멀어졌다<br>
-                <input type="radio" name="q7" value="40"> 완전히 고립되었다
             </div>
 
             <div class="question">
@@ -139,19 +112,12 @@
                 <input type="radio" name="q9" value="10"> 평소보다 더 많이 잔다
             </div>
 
-            <div class="question">
-                <label>이별한 상대와의 연락은 얼마나 자주 하나요?</label>
-                <input type="radio" name="q10" value="40"> 매일 연락한다<br>
-                <input type="radio" name="q10" value="30"> 자주 연락한다<br>
-                <input type="radio" name="q10" value="20"> 가끔 연락한다<br>
-                <input type="radio" name="q10" value="10"> 전혀 연락하지 않는다
-            </div>
-
             <button type="button" onclick="calculateTime()">결과 보기</button>
         </form>
         
-        <!-- 결과 표시 -->
+        <!-- 결과 및 조언 표시 -->
         <div id="result" class="result"></div>
+        <div id="advice" class="advice"></div>
     </div>
 
     <script>
@@ -159,11 +125,14 @@
             let form = document.forms['surveyForm'];
             let score = 0;
             
+            // 설문 점수 계산
             for (let i = 1; i <= 10; i++) {
                 let question = form['q' + i];
-                for (let j = 0; j < question.length; j++) {
-                    if (question[j].checked) {
-                        score += parseInt(question[j].value);
+                if(question) {
+                    for (let j = 0; j < question.length; j++) {
+                        if (question[j].checked) {
+                            score += parseInt(question[j].value);
+                        }
                     }
                 }
             }
@@ -180,6 +149,20 @@
             }
 
             document.getElementById('result').innerText = `잊는데 예상되는 시간: ${timeToForget}`;
+
+            // 맞춤형 조언 제공
+            let advice = "";
+            if(score > 200 && form['q6'].value >= 40) {
+                advice += "감정이 힘든 상태입니다. 가까운 친구나 가족과 감정을 나누고, 도움이 필요하면 전문가와 상담해보세요.\n";
+            }
+            if(score > 100 && form['q8'].value >= 30) {
+                advice += "새로운 활동이나 취미를 시작해보세요. 이것이 회복 과정에 큰 도움이 될 수 있습니다.\n";
+            }
+            if(form['q9'].value >= 30) {
+                advice += "수면 패턴이 변했다면, 충분한 휴식과 규칙적인 생활 패턴을 유지하려고 노력해보세요.";
+            }
+
+            document.getElementById('advice').innerText = advice;
         }
     </script>
 </body>

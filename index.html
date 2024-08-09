@@ -5,108 +5,173 @@
     <title>이별 후 회복 기간 예측하기</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        body {
-            font-family: 'Helvetica Neue', Arial, sans-serif;
-            margin: 20px;
-            background-color: #f7f9fc;
-            color: #333;
-            font-size: 18px;
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #28a745;
+            --bg-color: #f7f9fc;
+            --text-color: #333;
+            --container-bg: #fff;
+            --font-family: 'Helvetica Neue', Arial, sans-serif;
+            --dark-bg-color: #2c3e50;
+            --dark-text-color: #ecf0f1;
+            --dark-container-bg: #34495e;
         }
+
+        /* 다크 모드 */
+        body.dark-mode {
+            background-color: var(--dark-bg-color);
+            color: var(--dark-text-color);
+        }
+
+        body.dark-mode .container {
+            background-color: var(--dark-container-bg);
+        }
+
+        body {
+            font-family: var(--font-family);
+            margin: 20px;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-size: 18px;
+            transition: all 0.3s ease;
+        }
+
         .container {
             max-width: 800px;
             margin: auto;
-            background-color: #fff;
+            background-color: var(--container-bg);
             padding: 30px;
             border-radius: 10px;
             box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
         }
+
         .header {
-            background-color: #4a90e2;
+            background-color: var(--primary-color);
             color: white;
-            padding: 20px;
+            padding: 15px 20px;
             border-radius: 10px;
             margin-bottom: 30px;
-            font-size: 1.8em;
+            font-size: 1.5em;
             text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
+
+        .dark-mode-toggle {
+            background: transparent;
+            border: none;
+            font-size: 1em;
+            cursor: pointer;
+            color: white;
+            outline: none;
+        }
+
         .progress-bar {
             width: 100%;
             background-color: #f1f1f1;
             border-radius: 5px;
             margin-bottom: 20px;
+            overflow: hidden;
         }
+
         .progress {
             height: 10px;
-            background-color: #4a90e2;
-            border-radius: 5px;
+            background-color: var(--primary-color);
             width: 0;
+            transition: width 0.4s ease;
         }
+
         .question {
             margin-bottom: 20px;
             text-align: left;
         }
+
         .question label {
             font-weight: bold;
             display: block;
             margin-bottom: 10px;
             font-size: 1.1em;
         }
-        .question input[type="radio"], .question input[type="range"] {
+
+        .question input[type="radio"],
+        .question input[type="range"] {
             margin-right: 10px;
             transform: scale(1.2);
         }
-        .result, .advice, .plan, .playlist, .guide {
+
+        .result,
+        .advice,
+        .plan,
+        .playlist,
+        .guide {
             margin-top: 30px;
             font-weight: bold;
             font-size: 1.2em;
             text-align: left;
         }
+
         .advice {
-            color: #28a745;
+            color: var(--secondary-color);
         }
-        .resources, .emotion-diary {
+
+        .resources,
+        .emotion-diary {
             margin-top: 30px;
             text-align: left;
         }
-        .resources h3, .emotion-diary h3 {
-            color: #4a90e2;
+
+        .resources h3,
+        .emotion-diary h3 {
+            color: var(--primary-color);
             font-weight: bold;
             font-size: 1.2em;
         }
-        .resources ul, .emotion-diary ul {
+
+        .resources ul,
+        .emotion-diary ul {
             list-style-type: disc;
             padding-left: 20px;
         }
-        .resources ul li a, .emotion-diary ul li a {
+
+        .resources ul li a,
+        .emotion-diary ul li a {
             text-decoration: none;
-            color: #4a90e2;
+            color: var(--primary-color);
         }
+
         button {
-            padding: 12px 24px;
+            padding: 10px 20px;
             font-size: 16px;
             cursor: pointer;
-            background-color: #4a90e2;
+            background-color: var(--primary-color);
             color: white;
             border: none;
             border-radius: 5px;
             box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
             transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            margin-top: 10px;
         }
+
         button:hover {
             background-color: #357ABD;
             box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
         }
+
         .disclaimer {
             margin-top: 20px;
             font-size: 0.9em;
             color: #555;
             text-align: center;
         }
+
         .diary-input {
             margin-top: 20px;
             display: flex;
             flex-direction: column;
         }
+
         .diary-input textarea {
             margin-bottom: 10px;
             padding: 10px;
@@ -114,10 +179,12 @@
             border-radius: 5px;
             border: 1px solid #ccc;
         }
+
         .diary-input textarea::placeholder {
-            color: #aaa;
+            color: #666;
             font-style: italic;
         }
+
         .diary-list-item {
             padding: 10px;
             margin-top: 5px;
@@ -130,12 +197,14 @@
             body {
                 font-size: 16px;
             }
+
             .header {
-                font-size: 1.5em;
+                font-size: 1.3em;
             }
+
             button {
                 font-size: 14px;
-                padding: 10px 20px;
+                padding: 8px 16px;
             }
         }
 
@@ -143,12 +212,14 @@
             body {
                 font-size: 14px;
             }
+
             .header {
-                font-size: 1.3em;
+                font-size: 1.2em;
             }
+
             button {
                 font-size: 12px;
-                padding: 8px 16px;
+                padding: 6px 14px;
             }
         }
     </style>
@@ -156,7 +227,8 @@
 <body>
     <div class="container">
         <div class="header">
-            이별 후 회복 기간 예측하기
+            <span>이별 후 회복 기간 예측하기</span>
+            <button type="button" class="dark-mode-toggle" onclick="toggleDarkMode()">🌙 다크 모드</button>
         </div>
 
         <!-- 진행 상태 표시기 -->
@@ -166,114 +238,14 @@
 
         <!-- 설문 폼 -->
         <form id="surveyForm">
-            <fieldset class="question">
-                <legend>관계의 길이는 얼마나 되었나요?</legend>
-                <input type="radio" name="q1" value="10"> 1년 미만<br>
-                <input type="radio" name="q1" value="20"> 1-3년<br>
-                <input type="radio" name="q1" value="30"> 3년 이상
-            </fieldset>
-
-            <fieldset class="question">
-                <legend>이별의 충격은 얼마나 컸나요?</legend>
-                <input type="radio" name="q2" value="30"> 매우 컸다<br>
-                <input type="radio" name="q2" value="20"> 보통<br>
-                <input type="radio" name="q2" value="10"> 별로 충격적이지 않았다
-            </fieldset>
-
-            <fieldset class="question">
-                <legend>현재 감정 상태를 어떻게 표현하시겠어요?</legend>
-                <input type="radio" name="q6" value="50"> 매우 슬프다<br>
-                <input type="radio" name="q6" value="40"> 다소 슬프다<br>
-                <input type="radio" name="q6" value="20"> 평온하다<br>
-                <input type="radio" name="q6" value="10"> 다소 행복하다<br>
-                <input type="radio" name="q6" value="0"> 매우 행복하다
-            </fieldset>
-
-            <fieldset class="question">
-                <legend>이별 후 새로운 활동이나 취미를 시작했나요?</legend>
-                <input type="radio" name="q8" value="10"> 예, 여러 가지 새로운 활동을 시작했다<br>
-                <input type="radio" name="q8" value="20"> 예, 몇 가지 새로운 활동을 시작했다<br>
-                <input type="radio" name="q8" value="30"> 아니요, 기존 활동만 유지하고 있다<br>
-                <input type="radio" name="q8" value="40"> 아니요, 아무런 활동도 하지 않았다
-            </fieldset>
-
-            <fieldset class="question">
-                <legend>이별 후 수면 패턴은 어떻게 변했나요?</legend>
-                <input type="radio" name="q9" value="40"> 불면증이 심해졌다<br>
-                <input type="radio" name="q9" value="30"> 평소보다 덜 잔다<br>
-                <input type="radio" name="q9" value="20"> 평소와 비슷하다<br>
-                <input type="radio" name="q9" value="10"> 평소보다 더 많이 잔다
-            </fieldset>
-
-            <fieldset class="question">
-                <legend>이별 전후의 자기 인식은 어떻게 달라졌나요?</legend>
-                <input type="radio" name="q10" value="50"> 자신감이 많이 떨어졌다<br>
-                <input type="radio" name="q10" value="30"> 약간 떨어졌다<br>
-                <input type="radio" name="q10" value="10"> 거의 변하지 않았다<br>
-                <input type="radio" name="q10" value="0"> 오히려 자신감이 증가했다
-            </fieldset>
-
-            <fieldset class="question">
-                <legend>이별 후 주변 사람들로부터 어떤 도움을 받고 있나요?</legend>
-                <input type="radio" name="q11" value="10"> 친구나 가족의 도움을 많이 받고 있다<br>
-                <input type="radio" name="q11" value="20"> 보통이다<br>
-                <input type="radio" name="q11" value="30"> 도움을 거의 받지 못하고 있다
-            </fieldset>
-
-            <fieldset class="question">
-                <legend>미래의 관계에 대한 기대감은 어떤가요?</legend>
-                <input type="radio" name="q12" value="0"> 매우 긍정적이다<br>
-                <input type="radio" name="q12" value="10"> 다소 긍정적이다<br>
-                <input type="radio" name="q12" value="30"> 보통이다<br>
-                <input type="radio" name="q12" value="50"> 미래가 두렵다
-            </fieldset>
-
-            <fieldset class="question">
-                <legend>이별 후 생활 습관은 어떻게 변했나요?</legend>
-                <input type="radio" name="q13" value="40"> 건강하지 않은 습관이 생겼다<br>
-                <input type="radio" name="q13" value="30"> 평소보다 나빠졌다<br>
-                <input type="radio" name="q13" value="20"> 변함없다<br>
-                <input type="radio" name="q13" value="10"> 건강한 습관을 유지하고 있다<br>
-                <input type="radio" name="q13" value="0"> 건강한 습관을 새로 형성했다
-            </fieldset>
-
-            <fieldset class="question">
-                <legend>재회를 원하시나요?</legend>
-                <input type="radio" name="q17" value="10"> 네, 재회를 원합니다<br>
-                <input type="radio" name="q17" value="0"> 아니요, 재회를 원하지 않습니다
-            </fieldset>
-
-            <fieldset class="question">
-                <legend>다음 중 어떤 재회 전략이 가장 마음에 드시나요?</legend>
-                <input type="radio" name="q18" value="10"> 노컨택 전략<br>
-                <input type="radio" name="q18" value="20"> 슬로우 페이스<br>
-                <input type="radio" name="q18" value="30"> 미스테리어스 기법<br>
-                <input type="radio" name="q18" value="40"> 자기 개선<br>
-                <input type="radio" name="q18" value="50"> 사회적 증명<br>
-                <input type="radio" name="q18" value="60"> 부정적인 감정 표현 자제
-            </fieldset>
-
             <button type="button" onclick="calculateTime()">결과 보기</button>
         </form>
-        
+
         <!-- 결과 및 조언 표시 -->
         <div id="result" class="result"></div>
         <div id="advice" class="advice"></div>
         <div id="plan" class="plan"></div>
         <div id="playlist" class="playlist"></div>
-
-        <!-- 이별 후 극복 가이드 -->
-        <div class="guide">
-            <h3>이별 후 극복 가이드</h3>
-            <p>이별은 누구에게나 힘든 경험이 될 수 있으며, 감정적으로나 정신적으로 큰 충격을 줄 수 있습니다. 이별 후 겪는 감정과 상황은 다양할 수 있지만, 몇 가지 공통적인 경험과 그에 대한 해결 방법을 제시해 드리겠습니다.</p>
-            <ul>
-                <li><strong>슬픔과 상실감:</strong> 깊은 슬픔과 상실감을 느끼는 것은 자연스러운 일입니다. 이 감정을 억누르지 말고, 자연스럽게 받아들이세요.</li>
-                <li><strong>분노와 원망:</strong> 상대방이나 자신에게 분노를 느낄 수 있습니다. 이러한 감정을 인정하고, 차분히 다루어보세요.</li>
-                <li><strong>고독감:</strong> 혼자 있는 시간이 많아지면서 고독감을 느낄 수 있습니다. 사회적 지지를 활용하여 외로움을 극복하세요.</li>
-                <li><strong>불안과 미래에 대한 두려움:</strong> 새로운 시작에 대한 불안감을 가질 수 있습니다. 명상과 마인드풀니스로 마음을 진정시키는 것이 좋습니다.</li>
-                <li><strong>집착과 후회:</strong> 이별을 받아들이기 힘들다면, 새로운 활동을 시작하며 전환의 기회를 찾아보세요.</li>
-            </ul>
-        </div>
 
         <!-- 감정 일기 추가 -->
         <div class="emotion-diary">
@@ -302,6 +274,126 @@
     </div>
 
     <script>
+        // 다크 모드 토글
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+        }
+
+        // 설문 문항을 동적으로 생성
+        document.addEventListener("DOMContentLoaded", function () {
+            const form = document.getElementById("surveyForm");
+
+            const questions = [
+                {
+                    legend: "관계의 길이는 얼마나 되었나요?",
+                    options: [
+                        { value: "10", label: "1년 미만" },
+                        { value: "20", label: "1-3년" },
+                        { value: "30", label: "3년 이상" },
+                    ],
+                },
+                {
+                    legend: "이별의 충격은 얼마나 컸나요?",
+                    options: [
+                        { value: "30", label: "매우 컸다" },
+                        { value: "20", label: "보통" },
+                        { value: "10", label: "별로 충격적이지 않았다" },
+                    ],
+                },
+                {
+                    legend: "현재 감정 상태를 어떻게 표현하시겠어요?",
+                    options: [
+                        { value: "50", label: "매우 슬프다" },
+                        { value: "40", label: "다소 슬프다" },
+                        { value: "20", label: "평온하다" },
+                        { value: "10", label: "다소 행복하다" },
+                        { value: "0", label: "매우 행복하다" },
+                    ],
+                },
+                {
+                    legend: "이별 후 새로운 활동이나 취미를 시작했나요?",
+                    options: [
+                        { value: "10", label: "예, 여러 가지 새로운 활동을 시작했다" },
+                        { value: "20", label: "예, 몇 가지 새로운 활동을 시작했다" },
+                        { value: "30", label: "아니요, 기존 활동만 유지하고 있다" },
+                        { value: "40", label: "아니요, 아무런 활동도 하지 않았다" },
+                    ],
+                },
+                {
+                    legend: "이별 후 수면 패턴은 어떻게 변했나요?",
+                    options: [
+                        { value: "40", label: "불면증이 심해졌다" },
+                        { value: "30", label: "평소보다 덜 잔다" },
+                        { value: "20", label: "평소와 비슷하다" },
+                        { value: "10", label: "평소보다 더 많이 잔다" },
+                    ],
+                },
+                {
+                    legend: "이별 전후의 자기 인식은 어떻게 달라졌나요?",
+                    options: [
+                        { value: "50", label: "자신감이 많이 떨어졌다" },
+                        { value: "30", label: "약간 떨어졌다" },
+                        { value: "10", label: "거의 변하지 않았다" },
+                        { value: "0", label: "오히려 자신감이 증가했다" },
+                    ],
+                },
+                {
+                    legend: "이별 후 주변 사람들로부터 어떤 도움을 받고 있나요?",
+                    options: [
+                        { value: "10", label: "친구나 가족의 도움을 많이 받고 있다" },
+                        { value: "20", label: "보통이다" },
+                        { value: "30", label: "도움을 거의 받지 못하고 있다" },
+                    ],
+                },
+                {
+                    legend: "미래의 관계에 대한 기대감은 어떤가요?",
+                    options: [
+                        { value: "0", label: "매우 긍정적이다" },
+                        { value: "10", label: "다소 긍정적이다" },
+                        { value: "30", label: "보통이다" },
+                        { value: "50", label: "미래가 두렵다" },
+                    ],
+                },
+                {
+                    legend: "이별 후 생활 습관은 어떻게 변했나요?",
+                    options: [
+                        { value: "40", label: "건강하지 않은 습관이 생겼다" },
+                        { value: "30", label: "평소보다 나빠졌다" },
+                        { value: "20", label: "변함없다" },
+                        { value: "10", label: "건강한 습관을 유지하고 있다" },
+                        { value: "0", label: "건강한 습관을 새로 형성했다" },
+                    ],
+                },
+            ];
+
+            questions.forEach((question, index) => {
+                const fieldset = document.createElement("fieldset");
+                fieldset.className = "question";
+
+                const legend = document.createElement("legend");
+                legend.textContent = question.legend;
+                fieldset.appendChild(legend);
+
+                question.options.forEach((option) => {
+                    const label = document.createElement("label");
+                    const input = document.createElement("input");
+                    input.type = "radio";
+                    input.name = "q" + (index + 1);
+                    input.value = option.value;
+                    input.addEventListener('change', updateProgressBar); // 각 선택에 대해 진행 바 업데이트
+                    label.appendChild(input);
+                    label.appendChild(document.createTextNode(" " + option.label));
+                    fieldset.appendChild(label);
+                    fieldset.appendChild(document.createElement("br"));
+                });
+
+                form.insertBefore(fieldset, form.querySelector("button"));
+            });
+
+            // 폼이 동적으로 추가된 후 진행 바도 업데이트
+            updateProgressBar();
+        });
+
         // 결과 계산
         function calculateTime() {
             const form = document.forms['surveyForm'];
@@ -327,7 +419,7 @@
         // 점수 계산
         function calculateScore(form) {
             let score = 0;
-            for (let i = 1; i <= 18; i++) {
+            for (let i = 1; i <= 18; i++) {  // 여전히 최대 18개의 질문에 대한 점수를 계산
                 const question = form['q' + i];
                 if (question) {
                     score += getSelectedValue(question);
@@ -369,43 +461,14 @@
         function getAdvice(score, form) {
             let advice = "";
 
-            if(score > 300 && parseInt(form['q6'].value) >= 40) {
+            if(score > 300 && parseInt(form['q3'].value) >= 40) {
                 advice += "감정이 힘든 상태입니다. 가까운 친구나 가족과 감정을 나누고, 도움이 필요하면 전문가와 상담해보세요.\n";
             }
-            if(score > 200 && parseInt(form['q8'].value) >= 30) {
+            if(score > 200 && parseInt(form['q4'].value) >= 30) {
                 advice += "새로운 활동이나 취미를 시작해보세요. 이것이 회복 과정에 큰 도움이 될 수 있습니다.\n";
             }
-            if(parseInt(form['q9'].value) >= 30) {
+            if(parseInt(form['q5'].value) >= 30) {
                 advice += "수면 패턴이 변했다면, 충분한 휴식과 규칙적인 생활 패턴을 유지하려고 노력해보세요.";
-            }
-
-            if (form['q17'].value == "10") {
-                advice += "\n\n재회를 원하시는군요. 다음 중 선택하신 재회 전략을 고려해보세요:\n";
-
-                const strategy = parseInt(form['q18'].value);
-
-                switch(strategy) {
-                    case 10:
-                        advice += "- 노컨택 전략: 일정 기간 동안 상대방과의 연락을 완전히 끊고, 감정적으로 회복될 시간을 가지세요.\n";
-                        break;
-                    case 20:
-                        advice += "- 슬로우 페이스: 재회를 서두르지 않고 천천히 접근하여, 감정적 부담을 최소화하세요.\n";
-                        break;
-                    case 30:
-                        advice += "- 미스테리어스 기법: 자신에 대해 너무 많은 정보를 주지 않고, 약간의 미스터리를 유지하세요.\n";
-                        break;
-                    case 40:
-                        advice += "- 자기 개선: 이별 후 자신의 외모, 성격, 생활습관 등에서 긍정적인 변화를 추구하세요.\n";
-                        break;
-                    case 50:
-                        advice += "- 사회적 증명: 사회적 활동이나 다른 사람들과의 긍정적인 관계를 보여주어, 상대방이 나를 새로운 시각에서 보도록 유도하세요.\n";
-                        break;
-                    case 60:
-                        advice += "- 부정적인 감정 표현 자제: 상대방과의 대화에서 부정적인 감정을 표현하지 않도록 주의하세요.\n";
-                        break;
-                    default:
-                        break;
-                }
             }
 
             return advice;
@@ -512,11 +575,6 @@
             const progress = (answeredQuestions / totalQuestions) * 100;
             document.getElementById('progress').style.width = progress + '%';
         }
-
-        // 폼의 라디오 버튼 클릭 시 진행 바 업데이트
-        document.querySelectorAll('input[type="radio"]').forEach(input => {
-            input.addEventListener('change', updateProgressBar);
-        });
     </script>
 </body>
 </html>

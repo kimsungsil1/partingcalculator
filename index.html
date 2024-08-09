@@ -10,7 +10,7 @@
             margin: 20px;
             background-color: #f7f9fc;
             color: #333;
-            font-size: 18px; /* 기본 폰트 크기 */
+            font-size: 18px;
         }
         .container {
             max-width: 800px;
@@ -43,7 +43,7 @@
             margin-right: 10px;
             transform: scale(1.2);
         }
-        .result, .advice, .plan, .playlist {
+        .result, .advice, .plan, .playlist, .guide {
             margin-top: 30px;
             font-weight: bold;
             font-size: 1.2em;
@@ -105,26 +105,26 @@
         /* 반응형 디자인 */
         @media (max-width: 768px) {
             body {
-                font-size: 16px; /* 모바일에서 폰트 크기 증가 */
+                font-size: 16px;
             }
             .header {
-                font-size: 1.5em; /* 모바일에서 헤더 크기 조정 */
+                font-size: 1.5em;
             }
             button {
-                font-size: 14px; /* 모바일에서 버튼 폰트 크기 조정 */
+                font-size: 14px;
                 padding: 10px 20px;
             }
         }
 
         @media (max-width: 480px) {
             body {
-                font-size: 14px; /* 작은 모바일 화면에서 폰트 크기 조정 */
+                font-size: 14px;
             }
             .header {
-                font-size: 1.3em; /* 작은 모바일 화면에서 헤더 크기 조정 */
+                font-size: 1.3em;
             }
             button {
-                font-size: 12px; /* 작은 화면에서 버튼 폰트 크기 조정 */
+                font-size: 12px;
                 padding: 8px 16px;
             }
         }
@@ -238,6 +238,19 @@
         <div id="plan" class="plan"></div>
         <div id="playlist" class="playlist"></div>
 
+        <!-- 이별 후 극복 가이드 -->
+        <div class="guide">
+            <h3>이별 후 극복 가이드</h3>
+            <p>이별은 누구에게나 힘든 경험이 될 수 있으며, 감정적으로나 정신적으로 큰 충격을 줄 수 있습니다. 이별 후 겪는 감정과 상황은 다양할 수 있지만, 몇 가지 공통적인 경험과 그에 대한 해결 방법을 제시해 드리겠습니다.</p>
+            <ul>
+                <li><strong>슬픔과 상실감:</strong> 깊은 슬픔과 상실감을 느끼는 것은 자연스러운 일입니다. 이 감정을 억누르지 말고, 자연스럽게 받아들이세요.</li>
+                <li><strong>분노와 원망:</strong> 상대방이나 자신에게 분노를 느낄 수 있습니다. 이러한 감정을 인정하고, 차분히 다루어보세요.</li>
+                <li><strong>고독감:</strong> 혼자 있는 시간이 많아지면서 고독감을 느낄 수 있습니다. 사회적 지지를 활용하여 외로움을 극복하세요.</li>
+                <li><strong>불안과 미래에 대한 두려움:</strong> 새로운 시작에 대한 불안감을 가질 수 있습니다. 명상과 마인드풀니스로 마음을 진정시키는 것이 좋습니다.</li>
+                <li><strong>집착과 후회:</strong> 이별을 받아들이기 힘들다면, 새로운 활동을 시작하며 전환의 기회를 찾아보세요.</li>
+            </ul>
+        </div>
+
         <!-- 감정 일기 추가 -->
         <div class="emotion-diary">
             <h3>오늘의 감정 기록</h3>
@@ -254,7 +267,7 @@
             <ul>
                 <li><a href="https://example.com/mental-health" target="_blank">정신 건강을 위한 10가지 조언</a></li>
                 <li><a href="https://example.com/books" target="_blank">이별 후 회복을 돕는 책 목록</a></li>
-                <li><a href="tel:010-9299-9928">전문 상담 서비스 알아보기</a></li> <!-- 전화 연결 추가 -->
+                <li><a href="tel:010-9299-9928">전문 상담 서비스 알아보기</a></li>
             </ul>
         </div>
     </div>
@@ -265,7 +278,7 @@
             const form = document.forms['surveyForm'];
             const score = calculateScore(form);
 
-            console.log('Calculated Score:', score);  // 디버깅용 콘솔 출력
+            console.log('Calculated Score:', score);
 
             const timeToForget = getTimeToForget(score);
             document.getElementById('result').innerText = `잊는데 예상되는 시간: ${timeToForget}`;
@@ -295,14 +308,14 @@
         // 선택된 값 가져오기
         function getSelectedValue(question) {
             let selectedValue = 0;
-            if (question.length) {  // 여러 개의 라디오 버튼이 있는 경우
+            if (question.length) {
                 for (const option of question) {
                     if (option.checked) {
                         selectedValue = parseInt(option.value);
                         break;
                     }
                 }
-            } else if (question.checked) {  // 라디오 버튼이 하나만 있는 경우
+            } else if (question.checked) {
                 selectedValue = parseInt(question.value);
             }
             return selectedValue;
@@ -414,6 +427,17 @@
                 newEntry.innerText = `${new Date().toLocaleDateString()}: ${diaryText}`;
                 diaryList.appendChild(newEntry);
                 document.getElementById('diaryText').value = '';  // 입력 초기화
+
+                let message = "";
+                if (diaryText.includes("슬픔") || diaryText.includes("상실감")) {
+                    message = "슬픔을 느끼는 것은 자연스러운 일입니다. 이 감정을 억누르지 말고 받아들이세요.";
+                } else if (diaryText.includes("불안") || diaryText.includes("두려움")) {
+                    message = "새로운 시작은 불안할 수 있습니다. 하지만 이 또한 지나가리라는 것을 기억하세요.";
+                }
+                if (message) {
+                    alert(message);
+                }
+
                 saveDiaryToLocalStorage(newEntry.innerText);
             }
         }

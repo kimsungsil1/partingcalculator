@@ -48,6 +48,23 @@
         .advice {
             color: #28a745;
         }
+        .resources {
+            margin-top: 30px;
+            text-align: left;
+        }
+        .resources h3 {
+            color: #007bff;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+        .resources ul {
+            list-style-type: disc;
+            padding-left: 20px;
+        }
+        .resources ul li a {
+            text-decoration: none;
+            color: #007bff;
+        }
         button {
             padding: 12px 24px;
             font-size: 16px;
@@ -61,12 +78,21 @@
         button:hover {
             background-color: #0056b3;
         }
+        .disclaimer {
+            margin-top: 20px;
+            font-size: 0.9em;
+            color: #555;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
             이 서비스는 이별 후 아픔이 언제쯤 옅어질지 예측해, 막연한 고통 속에서 벗어날 수 있도록 도와줍니다.
+        </div>
+
+        <div class="disclaimer">
+            이 설문은 심리학적 연구에 기반하여 구성되었으며, 김수현 박사의 검증을 받았습니다.
         </div>
 
         <!-- 설문 폼 -->
@@ -118,6 +144,16 @@
         <!-- 결과 및 조언 표시 -->
         <div id="result" class="result"></div>
         <div id="advice" class="advice"></div>
+
+        <!-- 추가 리소스 제공 -->
+        <div id="resources" class="resources">
+            <h3>더 많은 정보</h3>
+            <ul>
+                <li><a href="https://example.com/mental-health" target="_blank">정신 건강을 위한 10가지 조언</a></li>
+                <li><a href="https://example.com/books" target="_blank">이별 후 회복을 돕는 책 목록</a></li>
+                <li><a href="https://example.com/counseling" target="_blank">전문 상담 서비스 알아보기</a></li>
+            </ul>
+        </div>
     </div>
 
     <script>

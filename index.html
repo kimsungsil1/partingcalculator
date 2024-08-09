@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>이별 후 잊는 시간 계산기</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+        }
+        .question {
+            margin-bottom: 15px;
+        }
+        .result {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>이별 후 잊는 시간 계산기</h1>
+        <form id="surveyForm">
+            <div class="question">
+                <label>관계의 길이는 얼마나 되었나요?</label><br>
+                <input type="radio" name="q1" value="10"> 1년 미만<br>
+                <input type="radio" name="q1" value="20"> 1-3년<br>
+                <input type="radio" name="q1" value="30"> 3년 이상<br>
+            </div>
+            <div class="question">
+                <label>이별의 충격은 얼마나 컸나요?</label><br>
+                <input type="radio" name="q2" value="30"> 매우 컸다<br>
+                <input type="radio" name="q2" value="20"> 보통<br>
+                <input type="radio" name="q2" value="10"> 별로 충격적이지 않았다<br>
+            </div>
+            <div class="question">
+                <label>지금 얼마나 자주 그 사람을 생각하나요?</label><br>
+                <input type="radio" name="q3" value="30"> 매일<br>
+                <input type="radio" name="q3" value="20"> 가끔<br>
+                <input type="radio" name="q3" value="10"> 거의 생각하지 않는다<br>
+            </div>
+            <button type="button" onclick="calculateTime()">결과 보기</button>
+        </form>
+        <div id="result" class="result"></div>
+    </div>
+
+    <script>
+        function calculateTime() {
+            let form = document.forms['surveyForm'];
+            let score = 0;
+            
+            for (let i = 1; i <= 3; i++) {
+                let question = form['q' + i];
+                for (let j = 0; j < question.length; j++) {
+                    if (question[j].checked) {
+                        score += parseInt(question[j].value);
+                    }
+                }
+            }
+
+            let timeToForget;
+            if (score <= 30) {
+                timeToForget = "1개월 미만";
+            } else if (score <= 60) {
+                timeToForget = "1-3개월";
+            } else if (score <= 90) {
+                timeToForget = "3-6개월";
+            } else {
+                timeToForget = "6개월 이상";
+            }
+
+            document.getElementById('result').innerText = `잊는데 예상되는 시간: ${timeToForget}`;
+        }
+    </script>
+</body>
+</html>

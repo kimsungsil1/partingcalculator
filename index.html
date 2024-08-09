@@ -179,6 +179,8 @@
             const form = document.forms['surveyForm'];
             const score = calculateScore(form);
 
+            console.log('Calculated Score:', score);  // 디버깅용 콘솔 출력
+
             const timeToForget = getTimeToForget(score);
             document.getElementById('result').innerText = `잊는데 예상되는 시간: ${timeToForget}`;
 
@@ -198,12 +200,18 @@
         }
 
         function getSelectedValue(question) {
-            for (const option of question) {
-                if (option.checked) {
-                    return parseInt(option.value);
+            let selectedValue = 0;
+            if (question.length) {  // 여러 개의 라디오 버튼이 있는 경우
+                for (const option of question) {
+                    if (option.checked) {
+                        selectedValue = parseInt(option.value);
+                        break;
+                    }
                 }
+            } else if (question.checked) {  // 라디오 버튼이 하나만 있는 경우
+                selectedValue = parseInt(question.value);
             }
-            return 0;
+            return selectedValue;
         }
 
         function getTimeToForget(score) {

@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>Parting Calculator</title>
+    <title>이별 후 회복 기간 예측하기</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         body {
@@ -15,7 +15,6 @@
         .container {
             max-width: 800px;
             margin: auto;
-            text-align: center;
             background-color: #fff;
             padding: 30px;
             border-radius: 10px;
@@ -28,6 +27,19 @@
             border-radius: 10px;
             margin-bottom: 30px;
             font-size: 1.8em;
+            text-align: center;
+        }
+        .progress-bar {
+            width: 100%;
+            background-color: #f1f1f1;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .progress {
+            height: 10px;
+            background-color: #4a90e2;
+            border-radius: 5px;
+            width: 0;
         }
         .question {
             margin-bottom: 20px;
@@ -88,6 +100,7 @@
             margin-top: 20px;
             font-size: 0.9em;
             color: #555;
+            text-align: center;
         }
         .diary-input {
             margin-top: 20px;
@@ -101,7 +114,17 @@
             border-radius: 5px;
             border: 1px solid #ccc;
         }
-        
+        .diary-input textarea::placeholder {
+            color: #aaa;
+            font-style: italic;
+        }
+        .diary-list-item {
+            padding: 10px;
+            margin-top: 5px;
+            background-color: #f1f1f1;
+            border-radius: 5px;
+        }
+
         /* 반응형 디자인 */
         @media (max-width: 768px) {
             body {
@@ -133,11 +156,12 @@
 <body>
     <div class="container">
         <div class="header">
-            이 서비스는 이별 후 아픔이 언제쯤 옅어질지 예측해, 막연한 고통 속에서 벗어날 수 있도록 도와줍니다.
+            이별 후 회복 기간 예측하기
         </div>
 
-        <div class="disclaimer">
-            이 설문은 심리학적 연구에 기반하여 구성되었으며, 김수현 박사의 검증을 받았습니다.
+        <!-- 진행 상태 표시기 -->
+        <div class="progress-bar">
+            <div class="progress" id="progress"></div>
         </div>
 
         <!-- 설문 폼 -->
@@ -255,7 +279,7 @@
         <div class="emotion-diary">
             <h3>오늘의 감정 기록</h3>
             <div class="diary-input">
-                <textarea id="diaryText" rows="4" placeholder="오늘의 감정을 기록하세요..."></textarea>
+                <textarea id="diaryText" rows="4" placeholder="오늘의 감정을 기록하세요... 예: 오늘은 슬픔과 고독감을 느꼈다."></textarea>
                 <button type="button" onclick="saveDiary()">기록 저장</button>
             </div>
             <ul id="diaryList"></ul>
@@ -269,6 +293,11 @@
                 <li><a href="https://example.com/books" target="_blank">이별 후 회복을 돕는 책 목록</a></li>
                 <li><a href="tel:010-9299-9928">전문 상담 서비스 알아보기</a></li>
             </ul>
+        </div>
+
+        <!-- 디스클레임(면책 조항) -->
+        <div class="disclaimer">
+            이 설문은 심리학적 연구에 기반하여 구성되었으며, 김수현 박사의 검증을 받았습니다.
         </div>
     </div>
 
@@ -291,6 +320,8 @@
 
             const playlist = getPlaylist(score);
             document.getElementById('playlist').innerHTML = playlist;
+
+            updateProgressBar();
         }
 
         // 점수 계산
@@ -425,6 +456,7 @@
                 const diaryList = document.getElementById('diaryList');
                 const newEntry = document.createElement('li');
                 newEntry.innerText = `${new Date().toLocaleDateString()}: ${diaryText}`;
+                newEntry.classList.add('diary-list-item');
                 diaryList.appendChild(newEntry);
                 document.getElementById('diaryText').value = '';  // 입력 초기화
 
@@ -456,12 +488,35 @@
             diaries.forEach(diary => {
                 const entry = document.createElement('li');
                 entry.innerText = diary;
+                entry.classList.add('diary-list-item');
                 diaryList.appendChild(entry);
             });
         }
 
         // 페이지 로드 시 일기 불러오기
         window.onload = loadDiaries;
+
+        // 진행 바 업데이트
+        function updateProgressBar() {
+            const form = document.forms['surveyForm'];
+            const questions = form.querySelectorAll('fieldset');
+            const totalQuestions = questions.length;
+            let answeredQuestions = 0;
+
+            questions.forEach(question => {
+                if (question.querySelector('input[type="radio"]:checked')) {
+                    answeredQuestions++;
+                }
+            });
+
+            const progress = (answeredQuestions / totalQuestions) * 100;
+            document.getElementById('progress').style.width = progress + '%';
+        }
+
+        // 폼의 라디오 버튼 클릭 시 진행 바 업데이트
+        document.querySelectorAll('input[type="radio"]').forEach(input => {
+            input.addEventListener('change', updateProgressBar);
+        });
     </script>
 </body>
 </html>

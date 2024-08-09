@@ -364,24 +364,6 @@
                         { value: "0", label: "건강한 습관을 새로 형성했다" },
                     ],
                 },
-                {
-                    legend: "재회를 원하시나요?",
-                    options: [
-                        { value: "10", label: "네, 재회를 원합니다" },
-                        { value: "0", label: "아니요, 재회를 원하지 않습니다" },
-                    ],
-                },
-                {
-                    legend: "다음 중 어떤 재회 전략이 가장 마음에 드시나요?",
-                    options: [
-                        { value: "10", label: "노컨택 전략" },
-                        { value: "20", label: "슬로우 페이스" },
-                        { value: "30", label: "미스테리어스 기법" },
-                        { value: "40", label: "자기 개선" },
-                        { value: "50", label: "사회적 증명" },
-                        { value: "60", label: "부정적인 감정 표현 자제" },
-                    ],
-                },
             ];
 
             questions.forEach((question, index) => {
@@ -398,6 +380,7 @@
                     input.type = "radio";
                     input.name = "q" + (index + 1);
                     input.value = option.value;
+                    input.addEventListener('change', updateProgressBar); // 각 선택에 대해 진행 바 업데이트
                     label.appendChild(input);
                     label.appendChild(document.createTextNode(" " + option.label));
                     fieldset.appendChild(label);
@@ -436,7 +419,7 @@
         // 점수 계산
         function calculateScore(form) {
             let score = 0;
-            for (let i = 1; i <= 18; i++) {
+            for (let i = 1; i <= 18; i++) {  // 여전히 최대 18개의 질문에 대한 점수를 계산
                 const question = form['q' + i];
                 if (question) {
                     score += getSelectedValue(question);
@@ -478,43 +461,14 @@
         function getAdvice(score, form) {
             let advice = "";
 
-            if(score > 300 && parseInt(form['q6'].value) >= 40) {
+            if(score > 300 && parseInt(form['q3'].value) >= 40) {
                 advice += "감정이 힘든 상태입니다. 가까운 친구나 가족과 감정을 나누고, 도움이 필요하면 전문가와 상담해보세요.\n";
             }
-            if(score > 200 && parseInt(form['q8'].value) >= 30) {
+            if(score > 200 && parseInt(form['q4'].value) >= 30) {
                 advice += "새로운 활동이나 취미를 시작해보세요. 이것이 회복 과정에 큰 도움이 될 수 있습니다.\n";
             }
-            if(parseInt(form['q9'].value) >= 30) {
+            if(parseInt(form['q5'].value) >= 30) {
                 advice += "수면 패턴이 변했다면, 충분한 휴식과 규칙적인 생활 패턴을 유지하려고 노력해보세요.";
-            }
-
-            if (form['q17'].value == "10") {
-                advice += "\n\n재회를 원하시는군요. 다음 중 선택하신 재회 전략을 고려해보세요:\n";
-
-                const strategy = parseInt(form['q18'].value);
-
-                switch(strategy) {
-                    case 10:
-                        advice += "- 노컨택 전략: 일정 기간 동안 상대방과의 연락을 완전히 끊고, 감정적으로 회복될 시간을 가지세요.\n";
-                        break;
-                    case 20:
-                        advice += "- 슬로우 페이스: 재회를 서두르지 않고 천천히 접근하여, 감정적 부담을 최소화하세요.\n";
-                        break;
-                    case 30:
-                        advice += "- 미스테리어스 기법: 자신에 대해 너무 많은 정보를 주지 않고, 약간의 미스터리를 유지하세요.\n";
-                        break;
-                    case 40:
-                        advice += "- 자기 개선: 이별 후 자신의 외모, 성격, 생활습관 등에서 긍정적인 변화를 추구하세요.\n";
-                        break;
-                    case 50:
-                        advice += "- 사회적 증명: 사회적 활동이나 다른 사람들과의 긍정적인 관계를 보여주어, 상대방이 나를 새로운 시각에서 보도록 유도하세요.\n";
-                        break;
-                    case 60:
-                        advice += "- 부정적인 감정 표현 자제: 상대방과의 대화에서 부정적인 감정을 표현하지 않도록 주의하세요.\n";
-                        break;
-                    default:
-                        break;
-                }
             }
 
             return advice;
@@ -621,11 +575,6 @@
             const progress = (answeredQuestions / totalQuestions) * 100;
             document.getElementById('progress').style.width = progress + '%';
         }
-
-        // 폼의 라디오 버튼 클릭 시 진행 바 업데이트
-        document.querySelectorAll('input[type="radio"]').forEach(input => {
-            input.addEventListener('change', updateProgressBar);
-        });
     </script>
 </body>
 </html>

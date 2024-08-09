@@ -4,13 +4,9 @@
     <meta charset="UTF-8">
     <title>이별 후 회복 기간 예측하기</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
-
     <style>
         body {
-            font-family: 'Playfair Display', serif; /* 기본 폰트 변경 */
+            font-family: 'Helvetica Neue', Arial, sans-serif;
             margin: 20px;
             background-color: #f7f9fc;
             color: #333;
@@ -25,13 +21,12 @@
             box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
         }
         .header {
-            font-family: 'Dancing Script', cursive; /* 헤더 폰트 변경 */
             background-color: #4a90e2;
             color: white;
             padding: 20px;
             border-radius: 10px;
             margin-bottom: 30px;
-            font-size: 2em; /* 헤더 폰트 크기 조정 */
+            font-size: 1.8em;
             text-align: center;
         }
         .progress-bar {
@@ -49,20 +44,22 @@
         .question {
             margin-bottom: 20px;
             text-align: left;
-            font-family: 'Playfair Display', serif;
         }
         .question label {
             font-weight: bold;
             display: block;
             margin-bottom: 10px;
-            font-size: 1.2em;
+            font-size: 1.1em;
+        }
+        .question input[type="radio"], .question input[type="range"] {
+            margin-right: 10px;
+            transform: scale(1.2);
         }
         .result, .advice, .plan, .playlist, .guide {
             margin-top: 30px;
             font-weight: bold;
-            font-size: 1.3em;
+            font-size: 1.2em;
             text-align: left;
-            font-family: 'Playfair Display', serif;
         }
         .advice {
             color: #28a745;
@@ -75,7 +72,6 @@
             color: #4a90e2;
             font-weight: bold;
             font-size: 1.2em;
-            font-family: 'Dancing Script', cursive;
         }
         .resources ul, .emotion-diary ul {
             list-style-type: disc;
@@ -84,7 +80,6 @@
         .resources ul li a, .emotion-diary ul li a {
             text-decoration: none;
             color: #4a90e2;
-            font-family: 'Playfair Display', serif;
         }
         button {
             padding: 12px 24px;
@@ -96,7 +91,6 @@
             border-radius: 5px;
             box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
             transition: background-color 0.3s ease, box-shadow 0.3s ease;
-            font-family: 'Playfair Display', serif;
         }
         button:hover {
             background-color: #357ABD;
@@ -107,7 +101,6 @@
             font-size: 0.9em;
             color: #555;
             text-align: center;
-            font-family: 'Playfair Display', serif;
         }
         .diary-input {
             margin-top: 20px;
@@ -120,7 +113,6 @@
             font-size: 1em;
             border-radius: 5px;
             border: 1px solid #ccc;
-            font-family: 'Playfair Display', serif;
         }
         .diary-input textarea::placeholder {
             color: #aaa;
@@ -131,7 +123,6 @@
             margin-top: 5px;
             background-color: #f1f1f1;
             border-radius: 5px;
-            font-family: 'Playfair Display', serif;
         }
 
         /* 반응형 디자인 */
@@ -140,7 +131,7 @@
                 font-size: 16px;
             }
             .header {
-                font-size: 1.8em;
+                font-size: 1.5em;
             }
             button {
                 font-size: 14px;
@@ -153,7 +144,7 @@
                 font-size: 14px;
             }
             .header {
-                font-size: 1.6em;
+                font-size: 1.3em;
             }
             button {
                 font-size: 12px;
@@ -210,4 +201,322 @@
                 <legend>이별 후 수면 패턴은 어떻게 변했나요?</legend>
                 <input type="radio" name="q9" value="40"> 불면증이 심해졌다<br>
                 <input type="radio" name="q9" value="30"> 평소보다 덜 잔다<br>
-                <input type="radio" name="q9" value="20">
+                <input type="radio" name="q9" value="20"> 평소와 비슷하다<br>
+                <input type="radio" name="q9" value="10"> 평소보다 더 많이 잔다
+            </fieldset>
+
+            <fieldset class="question">
+                <legend>이별 전후의 자기 인식은 어떻게 달라졌나요?</legend>
+                <input type="radio" name="q10" value="50"> 자신감이 많이 떨어졌다<br>
+                <input type="radio" name="q10" value="30"> 약간 떨어졌다<br>
+                <input type="radio" name="q10" value="10"> 거의 변하지 않았다<br>
+                <input type="radio" name="q10" value="0"> 오히려 자신감이 증가했다
+            </fieldset>
+
+            <fieldset class="question">
+                <legend>이별 후 주변 사람들로부터 어떤 도움을 받고 있나요?</legend>
+                <input type="radio" name="q11" value="10"> 친구나 가족의 도움을 많이 받고 있다<br>
+                <input type="radio" name="q11" value="20"> 보통이다<br>
+                <input type="radio" name="q11" value="30"> 도움을 거의 받지 못하고 있다
+            </fieldset>
+
+            <fieldset class="question">
+                <legend>미래의 관계에 대한 기대감은 어떤가요?</legend>
+                <input type="radio" name="q12" value="0"> 매우 긍정적이다<br>
+                <input type="radio" name="q12" value="10"> 다소 긍정적이다<br>
+                <input type="radio" name="q12" value="30"> 보통이다<br>
+                <input type="radio" name="q12" value="50"> 미래가 두렵다
+            </fieldset>
+
+            <fieldset class="question">
+                <legend>이별 후 생활 습관은 어떻게 변했나요?</legend>
+                <input type="radio" name="q13" value="40"> 건강하지 않은 습관이 생겼다<br>
+                <input type="radio" name="q13" value="30"> 평소보다 나빠졌다<br>
+                <input type="radio" name="q13" value="20"> 변함없다<br>
+                <input type="radio" name="q13" value="10"> 건강한 습관을 유지하고 있다<br>
+                <input type="radio" name="q13" value="0"> 건강한 습관을 새로 형성했다
+            </fieldset>
+
+            <fieldset class="question">
+                <legend>재회를 원하시나요?</legend>
+                <input type="radio" name="q17" value="10"> 네, 재회를 원합니다<br>
+                <input type="radio" name="q17" value="0"> 아니요, 재회를 원하지 않습니다
+            </fieldset>
+
+            <fieldset class="question">
+                <legend>다음 중 어떤 재회 전략이 가장 마음에 드시나요?</legend>
+                <input type="radio" name="q18" value="10"> 노컨택 전략<br>
+                <input type="radio" name="q18" value="20"> 슬로우 페이스<br>
+                <input type="radio" name="q18" value="30"> 미스테리어스 기법<br>
+                <input type="radio" name="q18" value="40"> 자기 개선<br>
+                <input type="radio" name="q18" value="50"> 사회적 증명<br>
+                <input type="radio" name="q18" value="60"> 부정적인 감정 표현 자제
+            </fieldset>
+
+            <button type="button" onclick="calculateTime()">결과 보기</button>
+        </form>
+        
+        <!-- 결과 및 조언 표시 -->
+        <div id="result" class="result"></div>
+        <div id="advice" class="advice"></div>
+        <div id="plan" class="plan"></div>
+        <div id="playlist" class="playlist"></div>
+
+        <!-- 이별 후 극복 가이드 -->
+        <div class="guide">
+            <h3>이별 후 극복 가이드</h3>
+            <p>이별은 누구에게나 힘든 경험이 될 수 있으며, 감정적으로나 정신적으로 큰 충격을 줄 수 있습니다. 이별 후 겪는 감정과 상황은 다양할 수 있지만, 몇 가지 공통적인 경험과 그에 대한 해결 방법을 제시해 드리겠습니다.</p>
+            <ul>
+                <li><strong>슬픔과 상실감:</strong> 깊은 슬픔과 상실감을 느끼는 것은 자연스러운 일입니다. 이 감정을 억누르지 말고, 자연스럽게 받아들이세요.</li>
+                <li><strong>분노와 원망:</strong> 상대방이나 자신에게 분노를 느낄 수 있습니다. 이러한 감정을 인정하고, 차분히 다루어보세요.</li>
+                <li><strong>고독감:</strong> 혼자 있는 시간이 많아지면서 고독감을 느낄 수 있습니다. 사회적 지지를 활용하여 외로움을 극복하세요.</li>
+                <li><strong>불안과 미래에 대한 두려움:</strong> 새로운 시작에 대한 불안감을 가질 수 있습니다. 명상과 마인드풀니스로 마음을 진정시키는 것이 좋습니다.</li>
+                <li><strong>집착과 후회:</strong> 이별을 받아들이기 힘들다면, 새로운 활동을 시작하며 전환의 기회를 찾아보세요.</li>
+            </ul>
+        </div>
+
+        <!-- 감정 일기 추가 -->
+        <div class="emotion-diary">
+            <h3>오늘의 감정 기록</h3>
+            <div class="diary-input">
+                <textarea id="diaryText" rows="4" placeholder="오늘의 감정을 기록하세요... 예: 오늘은 슬픔과 고독감을 느꼈다."></textarea>
+                <button type="button" onclick="saveDiary()">기록 저장</button>
+            </div>
+            <ul id="diaryList"></ul>
+        </div>
+
+        <!-- 추가 리소스 제공 -->
+        <div id="resources" class="resources">
+            <h3>더 많은 정보</h3>
+            <ul>
+                <li><a href="https://example.com/mental-health" target="_blank">정신 건강을 위한 10가지 조언</a></li>
+                <li><a href="https://example.com/books" target="_blank">이별 후 회복을 돕는 책 목록</a></li>
+                <li><a href="tel:010-9299-9928">전문 상담 서비스 알아보기</a></li>
+            </ul>
+        </div>
+
+        <!-- 디스클레임(면책 조항) -->
+        <div class="disclaimer">
+            이 설문은 심리학적 연구에 기반하여 구성되었으며, 김수현 박사의 검증을 받았습니다.
+        </div>
+    </div>
+
+    <script>
+        // 결과 계산
+        function calculateTime() {
+            const form = document.forms['surveyForm'];
+            const score = calculateScore(form);
+
+            console.log('Calculated Score:', score);
+
+            const timeToForget = getTimeToForget(score);
+            document.getElementById('result').innerText = `잊는데 예상되는 시간: ${timeToForget}`;
+
+            const advice = getAdvice(score, form);
+            document.getElementById('advice').innerText = advice;
+
+            const plan = getRecoveryPlan(score);
+            document.getElementById('plan').innerText = plan;
+
+            const playlist = getPlaylist(score);
+            document.getElementById('playlist').innerHTML = playlist;
+
+            updateProgressBar();
+        }
+
+        // 점수 계산
+        function calculateScore(form) {
+            let score = 0;
+            for (let i = 1; i <= 18; i++) {
+                const question = form['q' + i];
+                if (question) {
+                    score += getSelectedValue(question);
+                }
+            }
+            return score;
+        }
+
+        // 선택된 값 가져오기
+        function getSelectedValue(question) {
+            let selectedValue = 0;
+            if (question.length) {
+                for (const option of question) {
+                    if (option.checked) {
+                        selectedValue = parseInt(option.value);
+                        break;
+                    }
+                }
+            } else if (question.checked) {
+                selectedValue = parseInt(question.value);
+            }
+            return selectedValue;
+        }
+
+        // 잊는 시간 계산
+        function getTimeToForget(score) {
+            if (score <= 150) {
+                return "1개월 미만";
+            } else if (score <= 300) {
+                return "1-3개월";
+            } else if (score <= 450) {
+                return "3-6개월";
+            } else {
+                return "6개월 이상";
+            }
+        }
+
+        // 조언 제공
+        function getAdvice(score, form) {
+            let advice = "";
+
+            if(score > 300 && parseInt(form['q6'].value) >= 40) {
+                advice += "감정이 힘든 상태입니다. 가까운 친구나 가족과 감정을 나누고, 도움이 필요하면 전문가와 상담해보세요.\n";
+            }
+            if(score > 200 && parseInt(form['q8'].value) >= 30) {
+                advice += "새로운 활동이나 취미를 시작해보세요. 이것이 회복 과정에 큰 도움이 될 수 있습니다.\n";
+            }
+            if(parseInt(form['q9'].value) >= 30) {
+                advice += "수면 패턴이 변했다면, 충분한 휴식과 규칙적인 생활 패턴을 유지하려고 노력해보세요.";
+            }
+
+            if (form['q17'].value == "10") {
+                advice += "\n\n재회를 원하시는군요. 다음 중 선택하신 재회 전략을 고려해보세요:\n";
+
+                const strategy = parseInt(form['q18'].value);
+
+                switch(strategy) {
+                    case 10:
+                        advice += "- 노컨택 전략: 일정 기간 동안 상대방과의 연락을 완전히 끊고, 감정적으로 회복될 시간을 가지세요.\n";
+                        break;
+                    case 20:
+                        advice += "- 슬로우 페이스: 재회를 서두르지 않고 천천히 접근하여, 감정적 부담을 최소화하세요.\n";
+                        break;
+                    case 30:
+                        advice += "- 미스테리어스 기법: 자신에 대해 너무 많은 정보를 주지 않고, 약간의 미스터리를 유지하세요.\n";
+                        break;
+                    case 40:
+                        advice += "- 자기 개선: 이별 후 자신의 외모, 성격, 생활습관 등에서 긍정적인 변화를 추구하세요.\n";
+                        break;
+                    case 50:
+                        advice += "- 사회적 증명: 사회적 활동이나 다른 사람들과의 긍정적인 관계를 보여주어, 상대방이 나를 새로운 시각에서 보도록 유도하세요.\n";
+                        break;
+                    case 60:
+                        advice += "- 부정적인 감정 표현 자제: 상대방과의 대화에서 부정적인 감정을 표현하지 않도록 주의하세요.\n";
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            return advice;
+        }
+
+        // 개인화된 회복 계획 제공
+        function getRecoveryPlan(score) {
+            let plan = "추천 회복 계획: \n";
+
+            if (score > 400) {
+                plan += "- 매일 10분씩 명상하기\n";
+                plan += "- 매일 30분 산책\n";
+                plan += "- 친구나 가족과 자주 연락하기\n";
+            } else if (score > 300) {
+                plan += "- 새로운 취미를 시작하세요 (예: 요가, 독서, 그림 그리기)\n";
+                plan += "- 주기적으로 감정을 기록하세요\n";
+            } else {
+                plan += "- 자기 계발에 집중하세요 (예: 온라인 강좌, 운동)\n";
+                plan += "- 긍정적인 자기 대화를 시도하세요\n";
+            }
+
+            return plan;
+        }
+
+        // 감정에 맞는 음악/명상 추천
+        function getPlaylist(score) {
+            let playlist = "<h3>추천 음악/명상</h3><ul>";
+
+            if (score > 400) {
+                playlist += '<li><a href="https://www.youtube.com/watch?v=2OEL4P1Rz04" target="_blank">편안한 명상 음악</a></li>';
+                playlist += '<li><a href="https://www.youtube.com/watch?v=hnpQrMqDoqE" target="_blank">명상 가이드</a></li>';
+            } else if (score > 300) {
+                playlist += '<li><a href="https://www.youtube.com/watch?v=Y8Wp3D44x0M" target="_blank">기분 전환을 위한 음악</a></li>';
+                playlist += '<li><a href="https://www.youtube.com/watch?v=5qap5aO4i9A" target="_blank">편안한 로파이 힙합</a></li>';
+            } else {
+                playlist += '<li><a href="https://www.youtube.com/watch?v=8Qn_spdM5Zg" target="_blank">활기찬 팝 음악</a></li>';
+                playlist += '<li><a href="https://www.youtube.com/watch?v=Fp8msa5uYsc" target="_blank">긍정적인 아침 음악</a></li>';
+            }
+
+            playlist += "</ul>";
+            return playlist;
+        }
+
+        // 감정 일기 저장
+        function saveDiary() {
+            const diaryText = document.getElementById('diaryText').value;
+            if (diaryText) {
+                const diaryList = document.getElementById('diaryList');
+                const newEntry = document.createElement('li');
+                newEntry.innerText = `${new Date().toLocaleDateString()}: ${diaryText}`;
+                newEntry.classList.add('diary-list-item');
+                diaryList.appendChild(newEntry);
+                document.getElementById('diaryText').value = '';  // 입력 초기화
+
+                let message = "";
+                if (diaryText.includes("슬픔") || diaryText.includes("상실감")) {
+                    message = "슬픔을 느끼는 것은 자연스러운 일입니다. 이 감정을 억누르지 말고 받아들이세요.";
+                } else if (diaryText.includes("불안") || diaryText.includes("두려움")) {
+                    message = "새로운 시작은 불안할 수 있습니다. 하지만 이 또한 지나가리라는 것을 기억하세요.";
+                }
+                if (message) {
+                    alert(message);
+                }
+
+                saveDiaryToLocalStorage(newEntry.innerText);
+            }
+        }
+
+        // 로컬 스토리지에 일기 저장
+        function saveDiaryToLocalStorage(entry) {
+            let diaries = JSON.parse(localStorage.getItem('emotionDiaries')) || [];
+            diaries.push(entry);
+            localStorage.setItem('emotionDiaries', JSON.stringify(diaries));
+        }
+
+        // 로컬 스토리지에서 일기 불러오기
+        function loadDiaries() {
+            const diaries = JSON.parse(localStorage.getItem('emotionDiaries')) || [];
+            const diaryList = document.getElementById('diaryList');
+            diaries.forEach(diary => {
+                const entry = document.createElement('li');
+                entry.innerText = diary;
+                entry.classList.add('diary-list-item');
+                diaryList.appendChild(entry);
+            });
+        }
+
+        // 페이지 로드 시 일기 불러오기
+        window.onload = loadDiaries;
+
+        // 진행 바 업데이트
+        function updateProgressBar() {
+            const form = document.forms['surveyForm'];
+            const questions = form.querySelectorAll('fieldset');
+            const totalQuestions = questions.length;
+            let answeredQuestions = 0;
+
+            questions.forEach(question => {
+                if (question.querySelector('input[type="radio"]:checked')) {
+                    answeredQuestions++;
+                }
+            });
+
+            const progress = (answeredQuestions / totalQuestions) * 100;
+            document.getElementById('progress').style.width = progress + '%';
+        }
+
+        // 폼의 라디오 버튼 클릭 시 진행 바 업데이트
+        document.querySelectorAll('input[type="radio"]').forEach(input => {
+            input.addEventListener('change', updateProgressBar);
+        });
+    </script>
+</body>
+</html>

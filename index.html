@@ -11,7 +11,7 @@
             color: #333;
         }
         .container {
-            max-width: 600px;
+            max-width: 800px;
             margin: auto;
             text-align: center;
             background-color: #fff;
@@ -41,7 +41,7 @@
             margin-right: 10px;
             transform: scale(1.2);
         }
-        .result, .advice {
+        .result, .advice, .plan, .playlist {
             margin-top: 30px;
             font-weight: bold;
             font-size: 1.2em;
@@ -50,20 +50,20 @@
         .advice {
             color: #28a745;
         }
-        .resources {
+        .resources, .emotion-diary {
             margin-top: 30px;
             text-align: left;
         }
-        .resources h3 {
+        .resources h3, .emotion-diary h3 {
             color: #4a90e2;
             font-weight: bold;
             font-size: 1.2em;
         }
-        .resources ul {
+        .resources ul, .emotion-diary ul {
             list-style-type: disc;
             padding-left: 20px;
         }
-        .resources ul li a {
+        .resources ul li a, .emotion-diary ul li a {
             text-decoration: none;
             color: #4a90e2;
         }
@@ -86,6 +86,18 @@
             margin-top: 20px;
             font-size: 0.9em;
             color: #555;
+        }
+        .diary-input {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+        .diary-input textarea {
+            margin-bottom: 10px;
+            padding: 10px;
+            font-size: 1em;
+            border-radius: 5px;
+            border: 1px solid #ccc;
         }
     </style>
 </head>
@@ -162,6 +174,18 @@
         <!-- 결과 및 조언 표시 -->
         <div id="result" class="result"></div>
         <div id="advice" class="advice"></div>
+        <div id="plan" class="plan"></div>
+        <div id="playlist" class="playlist"></div>
+
+        <!-- 감정 일기 추가 -->
+        <div class="emotion-diary">
+            <h3>오늘의 감정 기록</h3>
+            <div class="diary-input">
+                <textarea id="diaryText" rows="4" placeholder="오늘의 감정을 기록하세요..."></textarea>
+                <button type="button" onclick="saveDiary()">기록 저장</button>
+            </div>
+            <ul id="diaryList"></ul>
+        </div>
 
         <!-- 추가 리소스 제공 -->
         <div id="resources" class="resources">
@@ -175,6 +199,7 @@
     </div>
 
     <script>
+        // 결과 계산
         function calculateTime() {
             const form = document.forms['surveyForm'];
             const score = calculateScore(form);
@@ -186,8 +211,15 @@
 
             const advice = getAdvice(score, form);
             document.getElementById('advice').innerText = advice;
+
+            const plan = getRecoveryPlan(score);
+            document.getElementById('plan').innerText = plan;
+
+            const playlist = getPlaylist(score);
+            document.getElementById('playlist').innerHTML = playlist;
         }
 
+        // 점수 계산
         function calculateScore(form) {
             let score = 0;
             for (let i = 1; i <= 18; i++) {
@@ -199,6 +231,7 @@
             return score;
         }
 
+        // 선택된 값 가져오기
         function getSelectedValue(question) {
             let selectedValue = 0;
             if (question.length) {  // 여러 개의 라디오 버튼이 있는 경우
@@ -214,6 +247,7 @@
             return selectedValue;
         }
 
+        // 잊는 시간 계산
         function getTimeToForget(score) {
             if (score <= 150) {
                 return "1개월 미만";
@@ -226,6 +260,7 @@
             }
         }
 
+        // 조언 제공
         function getAdvice(score, form) {
             let advice = "";
 
@@ -270,6 +305,78 @@
 
             return advice;
         }
+
+        // 개인화된 회복 계획 제공
+        function getRecoveryPlan(score) {
+            let plan = "추천 회복 계획: \n";
+
+            if (score > 400) {
+                plan += "- 매일 10분씩 명상하기\n";
+                plan += "- 매일 30분 산책\n";
+                plan += "- 친구나 가족과 자주 연락하기\n";
+            } else if (score > 300) {
+                plan += "- 새로운 취미를 시작하세요 (예: 요가, 독서, 그림 그리기)\n";
+                plan += "- 주기적으로 감정을 기록하세요\n";
+            } else {
+                plan += "- 자기 계발에 집중하세요 (예: 온라인 강좌, 운동)\n";
+                plan += "- 긍정적인 자기 대화를 시도하세요\n";
+            }
+
+            return plan;
+        }
+
+        // 감정에 맞는 음악/명상 추천
+        function getPlaylist(score) {
+            let playlist = "<h3>추천 음악/명상</h3><ul>";
+
+            if (score > 400) {
+                playlist += '<li><a href="https://www.youtube.com/watch?v=2OEL4P1Rz04" target="_blank">편안한 명상 음악</a></li>';
+                playlist += '<li><a href="https://www.youtube.com/watch?v=hnpQrMqDoqE" target="_blank">명상 가이드</a></li>';
+            } else if (score > 300) {
+                playlist += '<li><a href="https://www.youtube.com/watch?v=Y8Wp3D44x0M" target="_blank">기분 전환을 위한 음악</a></li>';
+                playlist += '<li><a href="https://www.youtube.com/watch?v=5qap5aO4i9A" target="_blank">편안한 로파이 힙합</a></li>';
+            } else {
+                playlist += '<li><a href="https://www.youtube.com/watch?v=8Qn_spdM5Zg" target="_blank">활기찬 팝 음악</a></li>';
+                playlist += '<li><a href="https://www.youtube.com/watch?v=Fp8msa5uYsc" target="_blank">긍정적인 아침 음악</a></li>';
+            }
+
+            playlist += "</ul>";
+            return playlist;
+        }
+
+        // 감정 일기 저장
+        function saveDiary() {
+            const diaryText = document.getElementById('diaryText').value;
+            if (diaryText) {
+                const diaryList = document.getElementById('diaryList');
+                const newEntry = document.createElement('li');
+                newEntry.innerText = `${new Date().toLocaleDateString()}: ${diaryText}`;
+                diaryList.appendChild(newEntry);
+                document.getElementById('diaryText').value = '';  // 입력 초기화
+                saveDiaryToLocalStorage(newEntry.innerText);
+            }
+        }
+
+        // 로컬 스토리지에 일기 저장
+        function saveDiaryToLocalStorage(entry) {
+            let diaries = JSON.parse(localStorage.getItem('emotionDiaries')) || [];
+            diaries.push(entry);
+            localStorage.setItem('emotionDiaries', JSON.stringify(diaries));
+        }
+
+        // 로컬 스토리지에서 일기 불러오기
+        function loadDiaries() {
+            const diaries = JSON.parse(localStorage.getItem('emotionDiaries')) || [];
+            const diaryList = document.getElementById('diaryList');
+            diaries.forEach(diary => {
+                const entry = document.createElement('li');
+                entry.innerText = diary;
+                diaryList.appendChild(entry);
+            });
+        }
+
+        // 페이지 로드 시 일기 불러오기
+        window.onload = loadDiaries;
     </script>
 </body>
 </html>

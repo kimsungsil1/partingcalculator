@@ -84,8 +84,13 @@
         }
 
         .question {
+            display: none;
             margin-bottom: 20px;
             text-align: left;
+        }
+
+        .question.active {
+            display: block;
         }
 
         .question label {
@@ -238,7 +243,11 @@
 
         <!-- 설문 폼 -->
         <form id="surveyForm">
-            <button type="button" onclick="calculateTime()">결과 보기</button>
+            <!-- 질문들이 동적으로 추가될 위치 -->
+            <div id="questionsContainer"></div>
+
+            <!-- 다음 버튼 -->
+            <button type="button" id="nextButton" onclick="showNextQuestion()">다음</button>
         </form>
 
         <!-- 결과 및 조언 표시 -->
@@ -274,6 +283,8 @@
     </div>
 
     <script>
+        let currentQuestionIndex = 0;
+
         // 다크 모드 토글
         function toggleDarkMode() {
             document.body.classList.toggle('dark-mode');
@@ -366,9 +377,12 @@
                 },
             ];
 
+            const questionsContainer = document.getElementById("questionsContainer");
+
             questions.forEach((question, index) => {
                 const fieldset = document.createElement("fieldset");
                 fieldset.className = "question";
+                if (index === 0) fieldset.classList.add("active"); // 첫 번째 질문만 활성화
 
                 const legend = document.createElement("legend");
                 legend.textContent = question.legend;
@@ -380,26 +394,47 @@
                     input.type = "radio";
                     input.name = "q" + (index + 1);
                     input.value = option.value;
-                    input.addEventListener('change', updateProgressBar); // 각 선택에 대해 진행 바 업데이트
                     label.appendChild(input);
                     label.appendChild(document.createTextNode(" " + option.label));
                     fieldset.appendChild(label);
                     fieldset.appendChild(document.createElement("br"));
                 });
 
-                form.insertBefore(fieldset, form.querySelector("button"));
+                questionsContainer.appendChild(fieldset);
             });
 
             // 폼이 동적으로 추가된 후 진행 바도 업데이트
             updateProgressBar();
         });
 
+        // 다음 질문 표시
+        function showNextQuestion() {
+            const questions = document.querySelectorAll('.question');
+            const currentQuestion = questions[currentQuestionIndex];
+
+            // 선택이 안된 경우 알림
+            if (!currentQuestion.querySelector('input[type="radio"]:checked')) {
+                alert("질문에 답변을 선택해주세요.");
+                return;
+            }
+
+            // 현재 질문 숨기고 다음 질문 표시
+            currentQuestion.classList.remove('active');
+            currentQuestionIndex++;
+
+            if (currentQuestionIndex < questions.length) {
+                questions[currentQuestionIndex].classList.add('active');
+                updateProgressBar();
+            } else {
+                document.getElementById("nextButton").style.display = 'none';
+                calculateTime();
+            }
+        }
+
         // 결과 계산
         function calculateTime() {
             const form = document.forms['surveyForm'];
             const score = calculateScore(form);
-
-            console.log('Calculated Score:', score);
 
             const timeToForget = getTimeToForget(score);
             document.getElementById('result').innerText = `잊는데 예상되는 시간: ${timeToForget}`;
@@ -412,8 +447,6 @@
 
             const playlist = getPlaylist(score);
             document.getElementById('playlist').innerHTML = playlist;
-
-            updateProgressBar();
         }
 
         // 점수 계산
@@ -561,18 +594,8 @@
 
         // 진행 바 업데이트
         function updateProgressBar() {
-            const form = document.forms['surveyForm'];
-            const questions = form.querySelectorAll('fieldset');
-            const totalQuestions = questions.length;
-            let answeredQuestions = 0;
-
-            questions.forEach(question => {
-                if (question.querySelector('input[type="radio"]:checked')) {
-                    answeredQuestions++;
-                }
-            });
-
-            const progress = (answeredQuestions / totalQuestions) * 100;
+            const questions = document.querySelectorAll('.question');
+            const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
             document.getElementById('progress').style.width = progress + '%';
         }
     </script>

@@ -3,12 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>Parting Calculator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         body {
             font-family: 'Helvetica Neue', Arial, sans-serif;
             margin: 20px;
             background-color: #f7f9fc;
             color: #333;
+            font-size: 18px; /* 기본 폰트 크기 */
         }
         .container {
             max-width: 800px;
@@ -98,6 +100,33 @@
             font-size: 1em;
             border-radius: 5px;
             border: 1px solid #ccc;
+        }
+        
+        /* 반응형 디자인 */
+        @media (max-width: 768px) {
+            body {
+                font-size: 16px; /* 모바일에서 폰트 크기 증가 */
+            }
+            .header {
+                font-size: 1.5em; /* 모바일에서 헤더 크기 조정 */
+            }
+            button {
+                font-size: 14px; /* 모바일에서 버튼 폰트 크기 조정 */
+                padding: 10px 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                font-size: 14px; /* 작은 모바일 화면에서 폰트 크기 조정 */
+            }
+            .header {
+                font-size: 1.3em; /* 작은 모바일 화면에서 헤더 크기 조정 */
+            }
+            button {
+                font-size: 12px; /* 작은 화면에서 버튼 폰트 크기 조정 */
+                padding: 8px 16px;
+            }
         }
     </style>
 </head>
@@ -225,7 +254,7 @@
             <ul>
                 <li><a href="https://example.com/mental-health" target="_blank">정신 건강을 위한 10가지 조언</a></li>
                 <li><a href="https://example.com/books" target="_blank">이별 후 회복을 돕는 책 목록</a></li>
-                <li><a href="https://example.com/counseling" target="_blank">전문 상담 서비스 알아보기</a></li>
+                <li><a href="tel:010-9299-9928">전문 상담 서비스 알아보기</a></li> <!-- 전화 연결 추가 -->
             </ul>
         </div>
     </div>

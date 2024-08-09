@@ -183,4 +183,68 @@
             document.getElementById('result').innerText = `잊는데 예상되는 시간: ${timeToForget}`;
 
             const advice = getAdvice(score, form);
-            document.getElementById('advice').innerText = advice
+            document.getElementById('advice').innerText = advice;
+        }
+
+        function calculateScore(form) {
+            let score = 0;
+            for (let i = 1; i <= 18; i++) {
+                const question = form['q' + i];
+                if (question) {
+                    score += getSelectedValue(question);
+                }
+            }
+            return score;
+        }
+
+        function getSelectedValue(question) {
+            for (const option of question) {
+                if (option.checked) {
+                    return parseInt(option.value);
+                }
+            }
+            return 0;
+        }
+
+        function getTimeToForget(score) {
+            if (score <= 150) {
+                return "1개월 미만";
+            } else if (score <= 300) {
+                return "1-3개월";
+            } else if (score <= 450) {
+                return "3-6개월";
+            } else {
+                return "6개월 이상";
+            }
+        }
+
+        function getAdvice(score, form) {
+            let advice = "";
+            if(score > 300 && parseInt(form['q6'].value) >= 40) {
+                advice += "감정이 힘든 상태입니다. 가까운 친구나 가족과 감정을 나누고, 도움이 필요하면 전문가와 상담해보세요.\n";
+            }
+            if(score > 200 && parseInt(form['q8'].value) >= 30) {
+                advice += "새로운 활동이나 취미를 시작해보세요. 이것이 회복 과정에 큰 도움이 될 수 있습니다.\n";
+            }
+            if(parseInt(form['q9'].value) >= 30) {
+                advice += "수면 패턴이 변했다면, 충분한 휴식과 규칙적인 생활 패턴을 유지하려고 노력해보세요.";
+            }
+
+            if (form['q17'].value == "10") {
+                advice += "\n\n재회를 원하시는군요. 다음 중 선택하신 재회 전략을 고려해보세요:\n";
+                const strategies = {
+                    '10': "- 노컨택 전략: 일정 기간 동안 상대방과의 연락을 완전히 끊고, 감정적으로 회복될 시간을 가지세요.\n",
+                    '20': "- 슬로우 페이스: 재회를 서두르지 않고 천천히 접근하여, 감정적 부담을 최소화하세요.\n",
+                    '30': "- 미스테리어스 기법: 자신에 대해 너무 많은 정보를 주지 않고, 약간의 미스터리를 유지하세요.\n",
+                    '40': "- 자기 개선: 이별 후 자신의 외모, 성격, 생활습관 등에서 긍정적인 변화를 추구하세요.\n",
+                    '50': "- 사회적 증명: 사회적 활동이나 다른 사람들과의 긍정적인 관계를 보여주어, 상대방이 나를 새로운 시각에서 보도록 유도하세요.\n",
+                    '60': "- 부정적인 감정 표현 자제: 상대방과의 대화에서 부정적인 감정을 표현하지 않도록 주의하세요.\n"
+                };
+                advice += strategies[form['q18'].value] || '';
+            }
+
+            return advice;
+        }
+    </script>
+</body>
+</html>

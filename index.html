@@ -238,13 +238,6 @@
 
         <!-- 설문 폼 -->
         <form id="surveyForm">
-            <fieldset class="question">
-                <legend>관계의 길이는 얼마나 되었나요?</legend>
-                <label><input type="radio" name="q1" value="10"> 1년 미만</label>
-                <label><input type="radio" name="q1" value="20"> 1-3년</label>
-                <label><input type="radio" name="q1" value="30"> 3년 이상</label>
-            </fieldset>
-
             <button type="button" onclick="calculateTime()">결과 보기</button>
         </form>
 
@@ -286,7 +279,139 @@
             document.body.classList.toggle('dark-mode');
         }
 
-        // 결과 계산 (기존과 동일한 함수 유지)
+        // 설문 문항을 동적으로 생성
+        document.addEventListener("DOMContentLoaded", function () {
+            const form = document.getElementById("surveyForm");
+
+            const questions = [
+                {
+                    legend: "관계의 길이는 얼마나 되었나요?",
+                    options: [
+                        { value: "10", label: "1년 미만" },
+                        { value: "20", label: "1-3년" },
+                        { value: "30", label: "3년 이상" },
+                    ],
+                },
+                {
+                    legend: "이별의 충격은 얼마나 컸나요?",
+                    options: [
+                        { value: "30", label: "매우 컸다" },
+                        { value: "20", label: "보통" },
+                        { value: "10", label: "별로 충격적이지 않았다" },
+                    ],
+                },
+                {
+                    legend: "현재 감정 상태를 어떻게 표현하시겠어요?",
+                    options: [
+                        { value: "50", label: "매우 슬프다" },
+                        { value: "40", label: "다소 슬프다" },
+                        { value: "20", label: "평온하다" },
+                        { value: "10", label: "다소 행복하다" },
+                        { value: "0", label: "매우 행복하다" },
+                    ],
+                },
+                {
+                    legend: "이별 후 새로운 활동이나 취미를 시작했나요?",
+                    options: [
+                        { value: "10", label: "예, 여러 가지 새로운 활동을 시작했다" },
+                        { value: "20", label: "예, 몇 가지 새로운 활동을 시작했다" },
+                        { value: "30", label: "아니요, 기존 활동만 유지하고 있다" },
+                        { value: "40", label: "아니요, 아무런 활동도 하지 않았다" },
+                    ],
+                },
+                {
+                    legend: "이별 후 수면 패턴은 어떻게 변했나요?",
+                    options: [
+                        { value: "40", label: "불면증이 심해졌다" },
+                        { value: "30", label: "평소보다 덜 잔다" },
+                        { value: "20", label: "평소와 비슷하다" },
+                        { value: "10", label: "평소보다 더 많이 잔다" },
+                    ],
+                },
+                {
+                    legend: "이별 전후의 자기 인식은 어떻게 달라졌나요?",
+                    options: [
+                        { value: "50", label: "자신감이 많이 떨어졌다" },
+                        { value: "30", label: "약간 떨어졌다" },
+                        { value: "10", label: "거의 변하지 않았다" },
+                        { value: "0", label: "오히려 자신감이 증가했다" },
+                    ],
+                },
+                {
+                    legend: "이별 후 주변 사람들로부터 어떤 도움을 받고 있나요?",
+                    options: [
+                        { value: "10", label: "친구나 가족의 도움을 많이 받고 있다" },
+                        { value: "20", label: "보통이다" },
+                        { value: "30", label: "도움을 거의 받지 못하고 있다" },
+                    ],
+                },
+                {
+                    legend: "미래의 관계에 대한 기대감은 어떤가요?",
+                    options: [
+                        { value: "0", label: "매우 긍정적이다" },
+                        { value: "10", label: "다소 긍정적이다" },
+                        { value: "30", label: "보통이다" },
+                        { value: "50", label: "미래가 두렵다" },
+                    ],
+                },
+                {
+                    legend: "이별 후 생활 습관은 어떻게 변했나요?",
+                    options: [
+                        { value: "40", label: "건강하지 않은 습관이 생겼다" },
+                        { value: "30", label: "평소보다 나빠졌다" },
+                        { value: "20", label: "변함없다" },
+                        { value: "10", label: "건강한 습관을 유지하고 있다" },
+                        { value: "0", label: "건강한 습관을 새로 형성했다" },
+                    ],
+                },
+                {
+                    legend: "재회를 원하시나요?",
+                    options: [
+                        { value: "10", label: "네, 재회를 원합니다" },
+                        { value: "0", label: "아니요, 재회를 원하지 않습니다" },
+                    ],
+                },
+                {
+                    legend: "다음 중 어떤 재회 전략이 가장 마음에 드시나요?",
+                    options: [
+                        { value: "10", label: "노컨택 전략" },
+                        { value: "20", label: "슬로우 페이스" },
+                        { value: "30", label: "미스테리어스 기법" },
+                        { value: "40", label: "자기 개선" },
+                        { value: "50", label: "사회적 증명" },
+                        { value: "60", label: "부정적인 감정 표현 자제" },
+                    ],
+                },
+            ];
+
+            questions.forEach((question, index) => {
+                const fieldset = document.createElement("fieldset");
+                fieldset.className = "question";
+
+                const legend = document.createElement("legend");
+                legend.textContent = question.legend;
+                fieldset.appendChild(legend);
+
+                question.options.forEach((option) => {
+                    const label = document.createElement("label");
+                    const input = document.createElement("input");
+                    input.type = "radio";
+                    input.name = "q" + (index + 1);
+                    input.value = option.value;
+                    label.appendChild(input);
+                    label.appendChild(document.createTextNode(" " + option.label));
+                    fieldset.appendChild(label);
+                    fieldset.appendChild(document.createElement("br"));
+                });
+
+                form.insertBefore(fieldset, form.querySelector("button"));
+            });
+
+            // 폼이 동적으로 추가된 후 진행 바도 업데이트
+            updateProgressBar();
+        });
+
+        // 결과 계산
         function calculateTime() {
             const form = document.forms['surveyForm'];
             const score = calculateScore(form);
@@ -308,7 +433,7 @@
             updateProgressBar();
         }
 
-        // 점수 계산 (기존과 동일한 함수 유지)
+        // 점수 계산
         function calculateScore(form) {
             let score = 0;
             for (let i = 1; i <= 18; i++) {
@@ -320,7 +445,7 @@
             return score;
         }
 
-        // 선택된 값 가져오기 (기존과 동일한 함수 유지)
+        // 선택된 값 가져오기
         function getSelectedValue(question) {
             let selectedValue = 0;
             if (question.length) {
@@ -336,7 +461,7 @@
             return selectedValue;
         }
 
-        // 잊는 시간 계산 (기존과 동일한 함수 유지)
+        // 잊는 시간 계산
         function getTimeToForget(score) {
             if (score <= 150) {
                 return "1개월 미만";
@@ -349,7 +474,7 @@
             }
         }
 
-        // 조언 제공 (기존과 동일한 함수 유지)
+        // 조언 제공
         function getAdvice(score, form) {
             let advice = "";
 
@@ -395,7 +520,7 @@
             return advice;
         }
 
-        // 개인화된 회복 계획 제공 (기존과 동일한 함수 유지)
+        // 개인화된 회복 계획 제공
         function getRecoveryPlan(score) {
             let plan = "추천 회복 계획: \n";
 
@@ -414,7 +539,7 @@
             return plan;
         }
 
-        // 감정에 맞는 음악/명상 추천 (기존과 동일한 함수 유지)
+        // 감정에 맞는 음악/명상 추천
         function getPlaylist(score) {
             let playlist = "<h3>추천 음악/명상</h3><ul>";
 
@@ -433,7 +558,7 @@
             return playlist;
         }
 
-        // 감정 일기 저장 (기존과 동일한 함수 유지)
+        // 감정 일기 저장
         function saveDiary() {
             const diaryText = document.getElementById('diaryText').value;
             if (diaryText) {
@@ -458,14 +583,14 @@
             }
         }
 
-        // 로컬 스토리지에 일기 저장 (기존과 동일한 함수 유지)
+        // 로컬 스토리지에 일기 저장
         function saveDiaryToLocalStorage(entry) {
             let diaries = JSON.parse(localStorage.getItem('emotionDiaries')) || [];
             diaries.push(entry);
             localStorage.setItem('emotionDiaries', JSON.stringify(diaries));
         }
 
-        // 로컬 스토리지에서 일기 불러오기 (기존과 동일한 함수 유지)
+        // 로컬 스토리지에서 일기 불러오기
         function loadDiaries() {
             const diaries = JSON.parse(localStorage.getItem('emotionDiaries')) || [];
             const diaryList = document.getElementById('diaryList');
@@ -477,10 +602,10 @@
             });
         }
 
-        // 페이지 로드 시 일기 불러오기 (기존과 동일한 함수 유지)
+        // 페이지 로드 시 일기 불러오기
         window.onload = loadDiaries;
 
-        // 진행 바 업데이트 (기존과 동일한 함수 유지)
+        // 진행 바 업데이트
         function updateProgressBar() {
             const form = document.forms['surveyForm'];
             const questions = form.querySelectorAll('fieldset');
@@ -497,7 +622,7 @@
             document.getElementById('progress').style.width = progress + '%';
         }
 
-        // 폼의 라디오 버튼 클릭 시 진행 바 업데이트 (기존과 동일한 함수 유지)
+        // 폼의 라디오 버튼 클릭 시 진행 바 업데이트
         document.querySelectorAll('input[type="radio"]').forEach(input => {
             input.addEventListener('change', updateProgressBar);
         });

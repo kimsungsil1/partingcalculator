@@ -74,18 +74,79 @@
                 <input type="radio" name="q1" value="20"> 1-3년<br>
                 <input type="radio" name="q1" value="30"> 3년 이상
             </div>
+
             <div class="question">
                 <label>이별의 충격은 얼마나 컸나요?</label>
                 <input type="radio" name="q2" value="30"> 매우 컸다<br>
                 <input type="radio" name="q2" value="20"> 보통<br>
                 <input type="radio" name="q2" value="10"> 별로 충격적이지 않았다
             </div>
+
             <div class="question">
                 <label>지금 얼마나 자주 그 사람을 생각하나요?</label>
                 <input type="radio" name="q3" value="30"> 매일<br>
                 <input type="radio" name="q3" value="20"> 가끔<br>
                 <input type="radio" name="q3" value="10"> 거의 생각하지 않는다
             </div>
+
+            <div class="question">
+                <label>이별의 원인은 무엇인가요?</label>
+                <input type="radio" name="q4" value="30"> 신뢰 문제<br>
+                <input type="radio" name="q4" value="20"> 성격 차이<br>
+                <input type="radio" name="q4" value="10"> 외부 요인 (가족, 일, 거리 등)<br>
+                <input type="radio" name="q4" value="10"> 기타
+            </div>
+
+            <div class="question">
+                <label>이별 후 현재 얼마나 시간이 지났나요?</label>
+                <input type="radio" name="q5" value="10"> 1주 이내<br>
+                <input type="radio" name="q5" value="20"> 1개월 이내<br>
+                <input type="radio" name="q5" value="30"> 3개월 이내<br>
+                <input type="radio" name="q5" value="40"> 6개월 이내<br>
+                <input type="radio" name="q5" value="50"> 1년 이상
+            </div>
+
+            <div class="question">
+                <label>현재 감정 상태를 어떻게 표현하시겠어요?</label>
+                <input type="radio" name="q6" value="50"> 매우 슬프다<br>
+                <input type="radio" name="q6" value="40"> 다소 슬프다<br>
+                <input type="radio" name="q6" value="20"> 평온하다<br>
+                <input type="radio" name="q6" value="10"> 다소 행복하다<br>
+                <input type="radio" name="q6" value="0"> 매우 행복하다
+            </div>
+
+            <div class="question">
+                <label>이별 후 주변 사람들과의 관계는 어떻게 변했나요?</label>
+                <input type="radio" name="q7" value="10"> 크게 달라지지 않았다<br>
+                <input type="radio" name="q7" value="20"> 더 가까워졌다<br>
+                <input type="radio" name="q7" value="30"> 조금 멀어졌다<br>
+                <input type="radio" name="q7" value="40"> 완전히 고립되었다
+            </div>
+
+            <div class="question">
+                <label>이별 후 새로운 활동이나 취미를 시작했나요?</label>
+                <input type="radio" name="q8" value="10"> 예, 여러 가지 새로운 활동을 시작했다<br>
+                <input type="radio" name="q8" value="20"> 예, 몇 가지 새로운 활동을 시작했다<br>
+                <input type="radio" name="q8" value="30"> 아니요, 기존 활동만 유지하고 있다<br>
+                <input type="radio" name="q8" value="40"> 아니요, 아무런 활동도 하지 않았다
+            </div>
+
+            <div class="question">
+                <label>이별 후 수면 패턴은 어떻게 변했나요?</label>
+                <input type="radio" name="q9" value="40"> 불면증이 심해졌다<br>
+                <input type="radio" name="q9" value="30"> 평소보다 덜 잔다<br>
+                <input type="radio" name="q9" value="20"> 평소와 비슷하다<br>
+                <input type="radio" name="q9" value="10"> 평소보다 더 많이 잔다
+            </div>
+
+            <div class="question">
+                <label>이별한 상대와의 연락은 얼마나 자주 하나요?</label>
+                <input type="radio" name="q10" value="40"> 매일 연락한다<br>
+                <input type="radio" name="q10" value="30"> 자주 연락한다<br>
+                <input type="radio" name="q10" value="20"> 가끔 연락한다<br>
+                <input type="radio" name="q10" value="10"> 전혀 연락하지 않는다
+            </div>
+
             <button type="button" onclick="calculateTime()">결과 보기</button>
         </form>
         
@@ -98,7 +159,7 @@
             let form = document.forms['surveyForm'];
             let score = 0;
             
-            for (let i = 1; i <= 3; i++) {
+            for (let i = 1; i <= 10; i++) {
                 let question = form['q' + i];
                 for (let j = 0; j < question.length; j++) {
                     if (question[j].checked) {
@@ -108,11 +169,11 @@
             }
 
             let timeToForget;
-            if (score <= 30) {
+            if (score <= 100) {
                 timeToForget = "1개월 미만";
-            } else if (score <= 60) {
+            } else if (score <= 200) {
                 timeToForget = "1-3개월";
-            } else if (score <= 90) {
+            } else if (score <= 300) {
                 timeToForget = "3-6개월";
             } else {
                 timeToForget = "6개월 이상";

@@ -149,11 +149,11 @@
             <fieldset class="question">
                 <legend>다음 중 어떤 재회 전략이 가장 마음에 드시나요?</legend>
                 <input type="radio" name="q18" value="10"> 노컨택 전략<br>
-                <input type="radio" name="q18" value="10"> 슬로우 페이스<br>
-                <input type="radio" name="q18" value="10"> 미스테리어스 기법<br>
-                <input type="radio" name="q18" value="10"> 자기 개선<br>
-                <input type="radio" name="q18" value="10"> 사회적 증명<br>
-                <input type="radio" name="q18" value="10"> 부정적인 감정 표현 자제
+                <input type="radio" name="q18" value="20"> 슬로우 페이스<br>
+                <input type="radio" name="q18" value="30"> 미스테리어스 기법<br>
+                <input type="radio" name="q18" value="40"> 자기 개선<br>
+                <input type="radio" name="q18" value="50"> 사회적 증명<br>
+                <input type="radio" name="q18" value="60"> 부정적인 감정 표현 자제
             </fieldset>
 
             <button type="button" onclick="calculateTime()">결과 보기</button>
@@ -228,6 +228,7 @@
 
         function getAdvice(score, form) {
             let advice = "";
+
             if(score > 300 && parseInt(form['q6'].value) >= 40) {
                 advice += "감정이 힘든 상태입니다. 가까운 친구나 가족과 감정을 나누고, 도움이 필요하면 전문가와 상담해보세요.\n";
             }
@@ -240,15 +241,31 @@
 
             if (form['q17'].value == "10") {
                 advice += "\n\n재회를 원하시는군요. 다음 중 선택하신 재회 전략을 고려해보세요:\n";
-                const strategies = {
-                    '10': "- 노컨택 전략: 일정 기간 동안 상대방과의 연락을 완전히 끊고, 감정적으로 회복될 시간을 가지세요.\n",
-                    '20': "- 슬로우 페이스: 재회를 서두르지 않고 천천히 접근하여, 감정적 부담을 최소화하세요.\n",
-                    '30': "- 미스테리어스 기법: 자신에 대해 너무 많은 정보를 주지 않고, 약간의 미스터리를 유지하세요.\n",
-                    '40': "- 자기 개선: 이별 후 자신의 외모, 성격, 생활습관 등에서 긍정적인 변화를 추구하세요.\n",
-                    '50': "- 사회적 증명: 사회적 활동이나 다른 사람들과의 긍정적인 관계를 보여주어, 상대방이 나를 새로운 시각에서 보도록 유도하세요.\n",
-                    '60': "- 부정적인 감정 표현 자제: 상대방과의 대화에서 부정적인 감정을 표현하지 않도록 주의하세요.\n"
-                };
-                advice += strategies[form['q18'].value] || '';
+
+                const strategy = parseInt(form['q18'].value);
+
+                switch(strategy) {
+                    case 10:
+                        advice += "- 노컨택 전략: 일정 기간 동안 상대방과의 연락을 완전히 끊고, 감정적으로 회복될 시간을 가지세요.\n";
+                        break;
+                    case 20:
+                        advice += "- 슬로우 페이스: 재회를 서두르지 않고 천천히 접근하여, 감정적 부담을 최소화하세요.\n";
+                        break;
+                    case 30:
+                        advice += "- 미스테리어스 기법: 자신에 대해 너무 많은 정보를 주지 않고, 약간의 미스터리를 유지하세요.\n";
+                        break;
+                    case 40:
+                        advice += "- 자기 개선: 이별 후 자신의 외모, 성격, 생활습관 등에서 긍정적인 변화를 추구하세요.\n";
+                        break;
+                    case 50:
+                        advice += "- 사회적 증명: 사회적 활동이나 다른 사람들과의 긍정적인 관계를 보여주어, 상대방이 나를 새로운 시각에서 보도록 유도하세요.\n";
+                        break;
+                    case 60:
+                        advice += "- 부정적인 감정 표현 자제: 상대방과의 대화에서 부정적인 감정을 표현하지 않도록 주의하세요.\n";
+                        break;
+                    default:
+                        break;
+                }
             }
 
             return advice;

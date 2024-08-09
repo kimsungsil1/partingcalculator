@@ -878,6 +878,30 @@
             // 폼이 동적으로 추가된 후 진행 바도 업데이트
             updateReunionProgressBar();
         });
+
+        // 다음 재회 질문 표시
+        function showNextReunionQuestion() {
+            const questions = document.querySelectorAll('#reunionQuestionsContainer .question');
+            const currentQuestion = questions[currentReunionQuestionIndex];
+
+            // 선택이 안된 경우 알림
+            if (!currentQuestion.querySelector('input[type="radio"]:checked') && !currentQuestion.querySelector('input[type="checkbox"]:checked')) {
+                alert("질문에 답변을 선택해주세요.");
+                return;
+            }
+
+            // 현재 질문 숨기고 다음 질문 표시
+            currentQuestion.classList.remove('active');
+            currentReunionQuestionIndex++;
+
+            if (currentReunionQuestionIndex < questions.length) {
+                questions[currentReunionQuestionIndex].classList.add('active');
+                updateReunionProgressBar();
+            } else {
+                document.getElementById("reunionNextButton").style.display = 'none';
+                document.getElementById("calculateReunionButton").style.display = 'block';
+            }
+        }
     </script>
 </body>
 </html>

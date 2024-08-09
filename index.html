@@ -116,7 +116,6 @@
                 <input type="radio" name="q2" value="10"> 별로 충격적이지 않았다
             </div>
 
-            <!-- 추가 질문들 -->
             <div class="question">
                 <label>현재 감정 상태를 어떻게 표현하시겠어요?</label>
                 <input type="radio" name="q6" value="50"> 매우 슬프다<br>
@@ -140,6 +139,63 @@
                 <input type="radio" name="q9" value="30"> 평소보다 덜 잔다<br>
                 <input type="radio" name="q9" value="20"> 평소와 비슷하다<br>
                 <input type="radio" name="q9" value="10"> 평소보다 더 많이 잔다
+            </div>
+
+            <!-- 새로운 질문 추가 -->
+            <div class="question">
+                <label>이별 후 감정 조절을 어떻게 하고 있나요?</label>
+                <input type="radio" name="q10" value="40"> 감정을 조절하기 어렵다<br>
+                <input type="radio" name="q10" value="30"> 가끔 감정을 조절하기 힘들다<br>
+                <input type="radio" name="q10" value="20"> 대부분의 경우 감정을 잘 조절한다<br>
+                <input type="radio" name="q10" value="10"> 감정을 잘 조절한다
+            </div>
+
+            <div class="question">
+                <label>과거의 연애 경험이 현재 이별에 미친 영향은 어떤가요?</label>
+                <input type="radio" name="q11" value="40"> 과거의 연애 경험이 현재 이별에 큰 영향을 미쳤다<br>
+                <input type="radio" name="q11" value="30"> 어느 정도 영향을 미쳤다<br>
+                <input type="radio" name="q11" value="20"> 거의 영향을 미치지 않았다<br>
+                <input type="radio" name="q11" value="10"> 전혀 영향을 미치지 않았다
+            </div>
+
+            <div class="question">
+                <label>미래의 연애에 대해 어떻게 생각하고 있나요?</label>
+                <input type="radio" name="q12" value="40"> 앞으로의 연애가 두렵다<br>
+                <input type="radio" name="q12" value="30"> 아직 준비가 되지 않았다<br>
+                <input type="radio" name="q12" value="20"> 기회가 있으면 시도할 것이다<br>
+                <input type="radio" name="q12" value="10"> 긍정적으로 기대하고 있다
+            </div>
+
+            <div class="question">
+                <label>이별 후 주변 사람들의 지지에 대해 어떻게 느끼시나요?</label>
+                <input type="radio" name="q13" value="40"> 전혀 지지를 받지 못했다<br>
+                <input type="radio" name="q13" value="30"> 약간의 지지를 받았다<br>
+                <input type="radio" name="q13" value="20"> 충분한 지지를 받았다<br>
+                <input type="radio" name="q13" value="10"> 매우 큰 지지를 받았다
+            </div>
+
+            <div class="question">
+                <label>이별 후 자존감에 어떤 변화가 있었나요?</label>
+                <input type="radio" name="q14" value="40"> 자존감이 많이 낮아졌다<br>
+                <input type="radio" name="q14" value="30"> 자존감이 약간 낮아졌다<br>
+                <input type="radio" name="q14" value="20"> 자존감이 그대로 유지되었다<br>
+                <input type="radio" name="q14" value="10"> 자존감이 더 높아졌다
+            </div>
+
+            <div class="question">
+                <label>현재 삶의 만족도는 어느 정도인가요?</label>
+                <input type="radio" name="q15" value="40"> 매우 낮다<br>
+                <input type="radio" name="q15" value="30"> 다소 낮다<br>
+                <input type="radio" name="q15" value="20"> 보통이다<br>
+                <input type="radio" name="q15" value="10"> 매우 높다
+            </div>
+
+            <div class="question">
+                <label>이별 후 스트레스 관리 능력은 어떠신가요?</label>
+                <input type="radio" name="q16" value="40"> 스트레스 관리를 전혀 못하고 있다<br>
+                <input type="radio" name="q16" value="30"> 스트레스 관리가 어렵다<br>
+                <input type="radio" name="q16" value="20"> 가끔 스트레스를 잘 관리한다<br>
+                <input type="radio" name="q16" value="10"> 스트레스를 잘 관리하고 있다
             </div>
 
             <button type="button" onclick="calculateTime()">결과 보기</button>
@@ -166,7 +222,7 @@
             let score = 0;
             
             // 설문 점수 계산
-            for (let i = 1; i <= 10; i++) {
+            for (let i = 1; i <= 16; i++) {
                 let question = form['q' + i];
                 if(question) {
                     for (let j = 0; j < question.length; j++) {
@@ -178,11 +234,11 @@
             }
 
             let timeToForget;
-            if (score <= 100) {
+            if (score <= 150) {
                 timeToForget = "1개월 미만";
-            } else if (score <= 200) {
-                timeToForget = "1-3개월";
             } else if (score <= 300) {
+                timeToForget = "1-3개월";
+            } else if (score <= 450) {
                 timeToForget = "3-6개월";
             } else {
                 timeToForget = "6개월 이상";
@@ -192,10 +248,10 @@
 
             // 맞춤형 조언 제공
             let advice = "";
-            if(score > 200 && form['q6'].value >= 40) {
+            if(score > 300 && form['q6'].value >= 40) {
                 advice += "감정이 힘든 상태입니다. 가까운 친구나 가족과 감정을 나누고, 도움이 필요하면 전문가와 상담해보세요.\n";
             }
-            if(score > 100 && form['q8'].value >= 30) {
+            if(score > 200 && form['q8'].value >= 30) {
                 advice += "새로운 활동이나 취미를 시작해보세요. 이것이 회복 과정에 큰 도움이 될 수 있습니다.\n";
             }
             if(form['q9'].value >= 30) {

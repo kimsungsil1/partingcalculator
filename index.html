@@ -141,61 +141,21 @@
                 <input type="radio" name="q9" value="10"> 평소보다 더 많이 잔다
             </div>
 
-            <!-- 새로운 질문 추가 -->
+            <!-- 재회 관련 질문 -->
             <div class="question">
-                <label>이별 후 감정 조절을 어떻게 하고 있나요?</label>
-                <input type="radio" name="q10" value="40"> 감정을 조절하기 어렵다<br>
-                <input type="radio" name="q10" value="30"> 가끔 감정을 조절하기 힘들다<br>
-                <input type="radio" name="q10" value="20"> 대부분의 경우 감정을 잘 조절한다<br>
-                <input type="radio" name="q10" value="10"> 감정을 잘 조절한다
+                <label>재회를 원하시나요?</label>
+                <input type="radio" name="q17" value="10"> 네, 재회를 원합니다<br>
+                <input type="radio" name="q17" value="0"> 아니요, 재회를 원하지 않습니다
             </div>
 
             <div class="question">
-                <label>과거의 연애 경험이 현재 이별에 미친 영향은 어떤가요?</label>
-                <input type="radio" name="q11" value="40"> 과거의 연애 경험이 현재 이별에 큰 영향을 미쳤다<br>
-                <input type="radio" name="q11" value="30"> 어느 정도 영향을 미쳤다<br>
-                <input type="radio" name="q11" value="20"> 거의 영향을 미치지 않았다<br>
-                <input type="radio" name="q11" value="10"> 전혀 영향을 미치지 않았다
-            </div>
-
-            <div class="question">
-                <label>미래의 연애에 대해 어떻게 생각하고 있나요?</label>
-                <input type="radio" name="q12" value="40"> 앞으로의 연애가 두렵다<br>
-                <input type="radio" name="q12" value="30"> 아직 준비가 되지 않았다<br>
-                <input type="radio" name="q12" value="20"> 기회가 있으면 시도할 것이다<br>
-                <input type="radio" name="q12" value="10"> 긍정적으로 기대하고 있다
-            </div>
-
-            <div class="question">
-                <label>이별 후 주변 사람들의 지지에 대해 어떻게 느끼시나요?</label>
-                <input type="radio" name="q13" value="40"> 전혀 지지를 받지 못했다<br>
-                <input type="radio" name="q13" value="30"> 약간의 지지를 받았다<br>
-                <input type="radio" name="q13" value="20"> 충분한 지지를 받았다<br>
-                <input type="radio" name="q13" value="10"> 매우 큰 지지를 받았다
-            </div>
-
-            <div class="question">
-                <label>이별 후 자존감에 어떤 변화가 있었나요?</label>
-                <input type="radio" name="q14" value="40"> 자존감이 많이 낮아졌다<br>
-                <input type="radio" name="q14" value="30"> 자존감이 약간 낮아졌다<br>
-                <input type="radio" name="q14" value="20"> 자존감이 그대로 유지되었다<br>
-                <input type="radio" name="q14" value="10"> 자존감이 더 높아졌다
-            </div>
-
-            <div class="question">
-                <label>현재 삶의 만족도는 어느 정도인가요?</label>
-                <input type="radio" name="q15" value="40"> 매우 낮다<br>
-                <input type="radio" name="q15" value="30"> 다소 낮다<br>
-                <input type="radio" name="q15" value="20"> 보통이다<br>
-                <input type="radio" name="q15" value="10"> 매우 높다
-            </div>
-
-            <div class="question">
-                <label>이별 후 스트레스 관리 능력은 어떠신가요?</label>
-                <input type="radio" name="q16" value="40"> 스트레스 관리를 전혀 못하고 있다<br>
-                <input type="radio" name="q16" value="30"> 스트레스 관리가 어렵다<br>
-                <input type="radio" name="q16" value="20"> 가끔 스트레스를 잘 관리한다<br>
-                <input type="radio" name="q16" value="10"> 스트레스를 잘 관리하고 있다
+                <label>다음 중 어떤 재회 전략이 가장 마음에 드시나요?</label>
+                <input type="radio" name="q18" value="10"> 노컨택 전략<br>
+                <input type="radio" name="q18" value="10"> 슬로우 패이스<br>
+                <input type="radio" name="q18" value="10"> 미스테리어스 기법<br>
+                <input type="radio" name="q18" value="10"> 자기 개선<br>
+                <input type="radio" name="q18" value="10"> 사회적 증명<br>
+                <input type="radio" name="q18" value="10"> 부정적인 감정 표현 자제<br>
             </div>
 
             <button type="button" onclick="calculateTime()">결과 보기</button>
@@ -222,7 +182,7 @@
             let score = 0;
             
             // 설문 점수 계산
-            for (let i = 1; i <= 16; i++) {
+            for (let i = 1; i <= 18; i++) {
                 let question = form['q' + i];
                 if(question) {
                     for (let j = 0; j < question.length; j++) {
@@ -256,6 +216,29 @@
             }
             if(form['q9'].value >= 30) {
                 advice += "수면 패턴이 변했다면, 충분한 휴식과 규칙적인 생활 패턴을 유지하려고 노력해보세요.";
+            }
+
+            // 재회를 원하는 경우 추가 조언 제공
+            if (form['q17'].value == "10") {
+                advice += "\n\n재회를 원하시는군요. 다음 중 선택하신 재회 전략을 고려해보세요:\n";
+                if (form['q18'].value == "10") {
+                    advice += "- 노컨택 전략: 일정 기간 동안 상대방과의 연락을 완전히 끊고, 감정적으로 회복될 시간을 가지세요.\n";
+                }
+                if (form['q18'].value == "10") {
+                    advice += "- 슬로우 패이스: 재회를 서두르지 않고 천천히 접근하여, 감정적 부담을 최소화하세요.\n";
+                }
+                if (form['q18'].value == "10") {
+                    advice += "- 미스테리어스 기법: 자신에 대해 너무 많은 정보를 주지 않고, 약간의 미스터리를 유지하세요.\n";
+                }
+                if (form['q18'].value == "10") {
+                    advice += "- 자기 개선: 이별 후 자신의 외모, 성격, 생활습관 등에서 긍정적인 변화를 추구하세요.\n";
+                }
+                if (form['q18'].value == "10") {
+                    advice += "- 사회적 증명: 사회적 활동이나 다른 사람들과의 긍정적인 관계를 보여주어, 상대방이 나를 새로운 시각에서 보도록 유도하세요.\n";
+                }
+                if (form['q18'].value == "10") {
+                    advice += "- 부정적인 감정 표현 자제: 상대방과의 대화에서 부정적인 감정을 표현하지 않도록 주의하세요.";
+                }
             }
 
             document.getElementById('advice').innerText = advice;

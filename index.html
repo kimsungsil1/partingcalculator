@@ -49,11 +49,23 @@
         .header {
             background-color: var(--primary-color);
             color: white;
-            padding: 20px;
+            padding: 15px 20px;
             border-radius: 10px;
             margin-bottom: 30px;
-            font-size: 1.8em;
+            font-size: 1.5em;
             text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .dark-mode-toggle {
+            background: transparent;
+            border: none;
+            font-size: 1em;
+            cursor: pointer;
+            color: white;
+            outline: none;
         }
 
         .progress-bar {
@@ -130,7 +142,7 @@
         }
 
         button {
-            padding: 12px 24px;
+            padding: 10px 20px;
             font-size: 16px;
             cursor: pointer;
             background-color: var(--primary-color);
@@ -139,6 +151,7 @@
             border-radius: 5px;
             box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
             transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            margin-top: 10px;
         }
 
         button:hover {
@@ -168,7 +181,7 @@
         }
 
         .diary-input textarea::placeholder {
-            color: #aaa;
+            color: #666;
             font-style: italic;
         }
 
@@ -186,12 +199,12 @@
             }
 
             .header {
-                font-size: 1.5em;
+                font-size: 1.3em;
             }
 
             button {
                 font-size: 14px;
-                padding: 10px 20px;
+                padding: 8px 16px;
             }
         }
 
@@ -201,12 +214,12 @@
             }
 
             .header {
-                font-size: 1.3em;
+                font-size: 1.2em;
             }
 
             button {
                 font-size: 12px;
-                padding: 8px 16px;
+                padding: 6px 14px;
             }
         }
     </style>
@@ -214,8 +227,8 @@
 <body>
     <div class="container">
         <div class="header">
-            이별 후 회복 기간 예측하기
-            <button type="button" onclick="toggleDarkMode()">🌙 다크 모드</button>
+            <span>이별 후 회복 기간 예측하기</span>
+            <button type="button" class="dark-mode-toggle" onclick="toggleDarkMode()">🌙 다크 모드</button>
         </div>
 
         <!-- 진행 상태 표시기 -->
@@ -225,12 +238,11 @@
 
         <!-- 설문 폼 -->
         <form id="surveyForm">
-            <!-- (질문 항목은 이전과 동일합니다) -->
             <fieldset class="question">
                 <legend>관계의 길이는 얼마나 되었나요?</legend>
-                <input type="radio" name="q1" value="10"> 1년 미만<br>
-                <input type="radio" name="q1" value="20"> 1-3년<br>
-                <input type="radio" name="q1" value="30"> 3년 이상
+                <label><input type="radio" name="q1" value="10"> 1년 미만</label>
+                <label><input type="radio" name="q1" value="20"> 1-3년</label>
+                <label><input type="radio" name="q1" value="30"> 3년 이상</label>
             </fieldset>
 
             <button type="button" onclick="calculateTime()">결과 보기</button>

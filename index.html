@@ -4,241 +4,140 @@
     <meta charset="UTF-8">
     <title>이별 후 회복 기간 예측하기</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --primary-color: #4a90e2;
-            --secondary-color: #28a745;
-            --bg-color: #f7f9fc;
-            --text-color: #333;
-            --container-bg: #fff;
-            --font-family: 'Helvetica Neue', Arial, sans-serif;
-            --dark-bg-color: #2c3e50;
-            --dark-text-color: #ecf0f1;
-            --dark-container-bg: #34495e;
-        }
-
-        /* 다크 모드 */
-        body.dark-mode {
-            background-color: var(--dark-bg-color);
-            color: var(--dark-text-color);
-        }
-
-        body.dark-mode .container {
-            background-color: var(--dark-container-bg);
-        }
-
         body {
-            font-family: var(--font-family);
+            font-family: 'Playfair Display', serif;
             margin: 20px;
-            background-color: var(--bg-color);
-            color: var(--text-color);
+            background-color: #f7f9fc;
+            color: #333;
             font-size: 18px;
-            transition: all 0.3s ease;
         }
-
         .container {
-            max-width: 800px;
+            max-width: 600px;
             margin: auto;
-            background-color: var(--container-bg);
+            background-color: #fff;
             padding: 30px;
             border-radius: 10px;
             box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
         }
-
         .header {
-            background-color: var(--primary-color);
+            font-family: 'Dancing Script', cursive;
+            background-color: #4a90e2;
             color: white;
-            padding: 15px 20px;
+            padding: 20px;
             border-radius: 10px;
             margin-bottom: 30px;
-            font-size: 1.5em;
+            font-size: 2em;
             text-align: center;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
         }
-
-        .dark-mode-toggle {
-            background: transparent;
-            border: none;
-            font-size: 1em;
-            cursor: pointer;
-            color: white;
-            outline: none;
-        }
-
-        .progress-bar {
-            width: 100%;
-            background-color: #f1f1f1;
-            border-radius: 5px;
-            margin-bottom: 20px;
-            overflow: hidden;
-        }
-
-        .progress {
-            height: 10px;
-            background-color: var(--primary-color);
-            width: 0;
-            transition: width 0.4s ease;
-        }
-
         .question {
+            display: none; /* 처음에는 모든 질문 숨김 */
             margin-bottom: 20px;
             text-align: left;
         }
-
+        .question.active {
+            display: block; /* 현재 질문만 표시 */
+        }
         .question label {
             font-weight: bold;
             display: block;
             margin-bottom: 10px;
-            font-size: 1.1em;
+            font-size: 1.2em;
         }
-
-        .question input[type="radio"],
-        .question input[type="range"] {
-            margin-right: 10px;
-            transform: scale(1.2);
-        }
-
-        .result,
-        .advice,
-        .plan,
-        .playlist,
-        .guide {
+        .result, .advice, .plan, .playlist, .guide {
             margin-top: 30px;
             font-weight: bold;
-            font-size: 1.2em;
+            font-size: 1.3em;
             text-align: left;
+            font-family: 'Playfair Display', serif;
         }
-
         .advice {
-            color: var(--secondary-color);
+            color: #28a745;
         }
-
-        .resources,
-        .emotion-diary {
+        .resources, .emotion-diary {
             margin-top: 30px;
             text-align: left;
         }
-
-        .resources h3,
-        .emotion-diary h3 {
-            color: var(--primary-color);
+        .resources h3, .emotion-diary h3 {
+            color: #4a90e2;
             font-weight: bold;
             font-size: 1.2em;
+            font-family: 'Dancing Script', cursive;
         }
-
-        .resources ul,
-        .emotion-diary ul {
-            list-style-type: disc;
-            padding-left: 20px;
-        }
-
-        .resources ul li a,
-        .emotion-diary ul li a {
-            text-decoration: none;
-            color: var(--primary-color);
-        }
-
         button {
-            padding: 10px 20px;
+            padding: 12px 24px;
             font-size: 16px;
             cursor: pointer;
-            background-color: var(--primary-color);
+            background-color: #4a90e2;
             color: white;
             border: none;
             border-radius: 5px;
             box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
             transition: background-color 0.3s ease, box-shadow 0.3s ease;
-            margin-top: 10px;
+            font-family: 'Playfair Display', serif;
         }
-
         button:hover {
             background-color: #357ABD;
             box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
         }
-
         .disclaimer {
             margin-top: 20px;
             font-size: 0.9em;
             color: #555;
             text-align: center;
-        }
-
-        .diary-input {
-            margin-top: 20px;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .diary-input textarea {
-            margin-bottom: 10px;
-            padding: 10px;
-            font-size: 1em;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-        }
-
-        .diary-input textarea::placeholder {
-            color: #666;
-            font-style: italic;
-        }
-
-        .diary-list-item {
-            padding: 10px;
-            margin-top: 5px;
-            background-color: #f1f1f1;
-            border-radius: 5px;
-        }
-
-        /* 반응형 디자인 */
-        @media (max-width: 768px) {
-            body {
-                font-size: 16px;
-            }
-
-            .header {
-                font-size: 1.3em;
-            }
-
-            button {
-                font-size: 14px;
-                padding: 8px 16px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            body {
-                font-size: 14px;
-            }
-
-            .header {
-                font-size: 1.2em;
-            }
-
-            button {
-                font-size: 12px;
-                padding: 6px 14px;
-            }
+            font-family: 'Playfair Display', serif;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <span>이별 후 회복 기간 예측하기</span>
-            <button type="button" class="dark-mode-toggle" onclick="toggleDarkMode()">🌙 다크 모드</button>
-        </div>
-
-        <!-- 진행 상태 표시기 -->
-        <div class="progress-bar">
-            <div class="progress" id="progress"></div>
+            이별 후 회복 기간 예측하기
         </div>
 
         <!-- 설문 폼 -->
         <form id="surveyForm">
-            <button type="button" onclick="calculateTime()">결과 보기</button>
+            <fieldset class="question active">
+                <legend>관계의 길이는 얼마나 되었나요?</legend>
+                <input type="radio" name="q1" value="10" onclick="showNextQuestion()"> 1년 미만<br>
+                <input type="radio" name="q1" value="20" onclick="showNextQuestion()"> 1-3년<br>
+                <input type="radio" name="q1" value="30" onclick="showNextQuestion()"> 3년 이상
+            </fieldset>
+
+            <fieldset class="question">
+                <legend>이별의 충격은 얼마나 컸나요?</legend>
+                <input type="radio" name="q2" value="30" onclick="showNextQuestion()"> 매우 컸다<br>
+                <input type="radio" name="q2" value="20" onclick="showNextQuestion()"> 보통<br>
+                <input type="radio" name="q2" value="10" onclick="showNextQuestion()"> 별로 충격적이지 않았다
+            </fieldset>
+
+            <fieldset class="question">
+                <legend>현재 감정 상태를 어떻게 표현하시겠어요?</legend>
+                <input type="radio" name="q6" value="50" onclick="showNextQuestion()"> 매우 슬프다<br>
+                <input type="radio" name="q6" value="40" onclick="showNextQuestion()"> 다소 슬프다<br>
+                <input type="radio" name="q6" value="20" onclick="showNextQuestion()"> 평온하다<br>
+                <input type="radio" name="q6" value="10" onclick="showNextQuestion()"> 다소 행복하다<br>
+                <input type="radio" name="q6" value="0" onclick="showNextQuestion()"> 매우 행복하다
+            </fieldset>
+
+            <fieldset class="question">
+                <legend>이별 후 새로운 활동이나 취미를 시작했나요?</legend>
+                <input type="radio" name="q8" value="10" onclick="showNextQuestion()"> 예, 여러 가지 새로운 활동을 시작했다<br>
+                <input type="radio" name="q8" value="20" onclick="showNextQuestion()"> 예, 몇 가지 새로운 활동을 시작했다<br>
+                <input type="radio" name="q8" value="30" onclick="showNextQuestion()"> 아니요, 기존 활동만 유지하고 있다<br>
+                <input type="radio" name="q8" value="40" onclick="showNextQuestion()"> 아니요, 아무런 활동도 하지 않았다
+            </fieldset>
+
+            <fieldset class="question">
+                <legend>이별 후 수면 패턴은 어떻게 변했나요?</legend>
+                <input type="radio" name="q9" value="40" onclick="showNextQuestion()"> 불면증이 심해졌다<br>
+                <input type="radio" name="q9" value="30" onclick="showNextQuestion()"> 평소보다 덜 잔다<br>
+                <input type="radio" name="q9" value="20" onclick="showNextQuestion()"> 평소와 비슷하다<br>
+                <input type="radio" name="q9" value="10" onclick="showNextQuestion()"> 평소보다 더 많이 잔다
+            </fieldset>
+
+            <button type="button" id="showResultButton" onclick="calculateTime()" style="display:none;">결과 보기</button>
         </form>
 
         <!-- 결과 및 조언 표시 -->
@@ -246,160 +145,26 @@
         <div id="advice" class="advice"></div>
         <div id="plan" class="plan"></div>
         <div id="playlist" class="playlist"></div>
-
-        <!-- 감정 일기 추가 -->
-        <div class="emotion-diary">
-            <h3>오늘의 감정 기록</h3>
-            <div class="diary-input">
-                <textarea id="diaryText" rows="4" placeholder="오늘의 감정을 기록하세요... 예: 오늘은 슬픔과 고독감을 느꼈다."></textarea>
-                <button type="button" onclick="saveDiary()">기록 저장</button>
-            </div>
-            <ul id="diaryList"></ul>
-        </div>
-
-        <!-- 추가 리소스 제공 -->
-        <div id="resources" class="resources">
-            <h3>더 많은 정보</h3>
-            <ul>
-                <li><a href="https://example.com/mental-health" target="_blank">정신 건강을 위한 10가지 조언</a></li>
-                <li><a href="https://example.com/books" target="_blank">이별 후 회복을 돕는 책 목록</a></li>
-                <li><a href="tel:010-9299-9928">전문 상담 서비스 알아보기</a></li>
-            </ul>
-        </div>
-
-        <!-- 디스클레임(면책 조항) -->
-        <div class="disclaimer">
-            이 설문은 심리학적 연구에 기반하여 구성되었으며, 김수현 박사의 검증을 받았습니다.
-        </div>
     </div>
 
     <script>
-        // 다크 모드 토글
-        function toggleDarkMode() {
-            document.body.classList.toggle('dark-mode');
+        // 다음 질문을 표시하는 함수
+        function showNextQuestion() {
+            const currentQuestion = document.querySelector('.question.active');
+            const nextQuestion = currentQuestion.nextElementSibling;
+
+            if (nextQuestion && nextQuestion.classList.contains('question')) {
+                currentQuestion.classList.remove('active');
+                nextQuestion.classList.add('active');
+            } else {
+                document.getElementById('showResultButton').style.display = 'block';
+            }
         }
-
-        // 설문 문항을 동적으로 생성
-        document.addEventListener("DOMContentLoaded", function () {
-            const form = document.getElementById("surveyForm");
-
-            const questions = [
-                {
-                    legend: "관계의 길이는 얼마나 되었나요?",
-                    options: [
-                        { value: "10", label: "1년 미만" },
-                        { value: "20", label: "1-3년" },
-                        { value: "30", label: "3년 이상" },
-                    ],
-                },
-                {
-                    legend: "이별의 충격은 얼마나 컸나요?",
-                    options: [
-                        { value: "30", label: "매우 컸다" },
-                        { value: "20", label: "보통" },
-                        { value: "10", label: "별로 충격적이지 않았다" },
-                    ],
-                },
-                {
-                    legend: "현재 감정 상태를 어떻게 표현하시겠어요?",
-                    options: [
-                        { value: "50", label: "매우 슬프다" },
-                        { value: "40", label: "다소 슬프다" },
-                        { value: "20", label: "평온하다" },
-                        { value: "10", label: "다소 행복하다" },
-                        { value: "0", label: "매우 행복하다" },
-                    ],
-                },
-                {
-                    legend: "이별 후 새로운 활동이나 취미를 시작했나요?",
-                    options: [
-                        { value: "10", label: "예, 여러 가지 새로운 활동을 시작했다" },
-                        { value: "20", label: "예, 몇 가지 새로운 활동을 시작했다" },
-                        { value: "30", label: "아니요, 기존 활동만 유지하고 있다" },
-                        { value: "40", label: "아니요, 아무런 활동도 하지 않았다" },
-                    ],
-                },
-                {
-                    legend: "이별 후 수면 패턴은 어떻게 변했나요?",
-                    options: [
-                        { value: "40", label: "불면증이 심해졌다" },
-                        { value: "30", label: "평소보다 덜 잔다" },
-                        { value: "20", label: "평소와 비슷하다" },
-                        { value: "10", label: "평소보다 더 많이 잔다" },
-                    ],
-                },
-                {
-                    legend: "이별 전후의 자기 인식은 어떻게 달라졌나요?",
-                    options: [
-                        { value: "50", label: "자신감이 많이 떨어졌다" },
-                        { value: "30", label: "약간 떨어졌다" },
-                        { value: "10", label: "거의 변하지 않았다" },
-                        { value: "0", label: "오히려 자신감이 증가했다" },
-                    ],
-                },
-                {
-                    legend: "이별 후 주변 사람들로부터 어떤 도움을 받고 있나요?",
-                    options: [
-                        { value: "10", label: "친구나 가족의 도움을 많이 받고 있다" },
-                        { value: "20", label: "보통이다" },
-                        { value: "30", label: "도움을 거의 받지 못하고 있다" },
-                    ],
-                },
-                {
-                    legend: "미래의 관계에 대한 기대감은 어떤가요?",
-                    options: [
-                        { value: "0", label: "매우 긍정적이다" },
-                        { value: "10", label: "다소 긍정적이다" },
-                        { value: "30", label: "보통이다" },
-                        { value: "50", label: "미래가 두렵다" },
-                    ],
-                },
-                {
-                    legend: "이별 후 생활 습관은 어떻게 변했나요?",
-                    options: [
-                        { value: "40", label: "건강하지 않은 습관이 생겼다" },
-                        { value: "30", label: "평소보다 나빠졌다" },
-                        { value: "20", label: "변함없다" },
-                        { value: "10", label: "건강한 습관을 유지하고 있다" },
-                        { value: "0", label: "건강한 습관을 새로 형성했다" },
-                    ],
-                },
-            ];
-
-            questions.forEach((question, index) => {
-                const fieldset = document.createElement("fieldset");
-                fieldset.className = "question";
-
-                const legend = document.createElement("legend");
-                legend.textContent = question.legend;
-                fieldset.appendChild(legend);
-
-                question.options.forEach((option) => {
-                    const label = document.createElement("label");
-                    const input = document.createElement("input");
-                    input.type = "radio";
-                    input.name = "q" + (index + 1);
-                    input.value = option.value;
-                    input.addEventListener('change', updateProgressBar); // 각 선택에 대해 진행 바 업데이트
-                    label.appendChild(input);
-                    label.appendChild(document.createTextNode(" " + option.label));
-                    fieldset.appendChild(label);
-                    fieldset.appendChild(document.createElement("br"));
-                });
-
-                form.insertBefore(fieldset, form.querySelector("button"));
-            });
-
-            // 폼이 동적으로 추가된 후 진행 바도 업데이트
-            updateProgressBar();
-        });
 
         // 결과 계산
         function calculateTime() {
             const form = document.forms['surveyForm'];
             const score = calculateScore(form);
-
-            console.log('Calculated Score:', score);
 
             const timeToForget = getTimeToForget(score);
             document.getElementById('result').innerText = `잊는데 예상되는 시간: ${timeToForget}`;
@@ -412,14 +177,12 @@
 
             const playlist = getPlaylist(score);
             document.getElementById('playlist').innerHTML = playlist;
-
-            updateProgressBar();
         }
 
         // 점수 계산
         function calculateScore(form) {
             let score = 0;
-            for (let i = 1; i <= 18; i++) {  // 여전히 최대 18개의 질문에 대한 점수를 계산
+            for (let i = 1; i <= 18; i++) {
                 const question = form['q' + i];
                 if (question) {
                     score += getSelectedValue(question);
@@ -461,13 +224,13 @@
         function getAdvice(score, form) {
             let advice = "";
 
-            if(score > 300 && parseInt(form['q3'].value) >= 40) {
+            if(score > 300 && parseInt(form['q6'].value) >= 40) {
                 advice += "감정이 힘든 상태입니다. 가까운 친구나 가족과 감정을 나누고, 도움이 필요하면 전문가와 상담해보세요.\n";
             }
-            if(score > 200 && parseInt(form['q4'].value) >= 30) {
+            if(score > 200 && parseInt(form['q8'].value) >= 30) {
                 advice += "새로운 활동이나 취미를 시작해보세요. 이것이 회복 과정에 큰 도움이 될 수 있습니다.\n";
             }
-            if(parseInt(form['q5'].value) >= 30) {
+            if(parseInt(form['q9'].value) >= 30) {
                 advice += "수면 패턴이 변했다면, 충분한 휴식과 규칙적인 생활 패턴을 유지하려고 노력해보세요.";
             }
 
@@ -510,70 +273,6 @@
 
             playlist += "</ul>";
             return playlist;
-        }
-
-        // 감정 일기 저장
-        function saveDiary() {
-            const diaryText = document.getElementById('diaryText').value;
-            if (diaryText) {
-                const diaryList = document.getElementById('diaryList');
-                const newEntry = document.createElement('li');
-                newEntry.innerText = `${new Date().toLocaleDateString()}: ${diaryText}`;
-                newEntry.classList.add('diary-list-item');
-                diaryList.appendChild(newEntry);
-                document.getElementById('diaryText').value = '';  // 입력 초기화
-
-                let message = "";
-                if (diaryText.includes("슬픔") || diaryText.includes("상실감")) {
-                    message = "슬픔을 느끼는 것은 자연스러운 일입니다. 이 감정을 억누르지 말고 받아들이세요.";
-                } else if (diaryText.includes("불안") || diaryText.includes("두려움")) {
-                    message = "새로운 시작은 불안할 수 있습니다. 하지만 이 또한 지나가리라는 것을 기억하세요.";
-                }
-                if (message) {
-                    alert(message);
-                }
-
-                saveDiaryToLocalStorage(newEntry.innerText);
-            }
-        }
-
-        // 로컬 스토리지에 일기 저장
-        function saveDiaryToLocalStorage(entry) {
-            let diaries = JSON.parse(localStorage.getItem('emotionDiaries')) || [];
-            diaries.push(entry);
-            localStorage.setItem('emotionDiaries', JSON.stringify(diaries));
-        }
-
-        // 로컬 스토리지에서 일기 불러오기
-        function loadDiaries() {
-            const diaries = JSON.parse(localStorage.getItem('emotionDiaries')) || [];
-            const diaryList = document.getElementById('diaryList');
-            diaries.forEach(diary => {
-                const entry = document.createElement('li');
-                entry.innerText = diary;
-                entry.classList.add('diary-list-item');
-                diaryList.appendChild(entry);
-            });
-        }
-
-        // 페이지 로드 시 일기 불러오기
-        window.onload = loadDiaries;
-
-        // 진행 바 업데이트
-        function updateProgressBar() {
-            const form = document.forms['surveyForm'];
-            const questions = form.querySelectorAll('fieldset');
-            const totalQuestions = questions.length;
-            let answeredQuestions = 0;
-
-            questions.forEach(question => {
-                if (question.querySelector('input[type="radio"]:checked')) {
-                    answeredQuestions++;
-                }
-            });
-
-            const progress = (answeredQuestions / totalQuestions) * 100;
-            document.getElementById('progress').style.width = progress + '%';
         }
     </script>
 </body>

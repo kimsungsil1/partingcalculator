@@ -100,8 +100,7 @@
             font-size: 1.1em;
         }
 
-        .question input[type="radio"],
-        .question input[type="checkbox"] {
+        .question input[type="radio"] {
             margin-right: 10px;
             transform: scale(1.2);
         }
@@ -266,20 +265,14 @@
         <div id="plan" class="plan"></div>
         <div id="playlist" class="playlist"></div>
 
-        <!-- 재회 확률 계산 섹션 -->
-        <div id="reunionSection" style="display:none;">
-            <h3>재회 확률을 계산해 보세요</h3>
-
-            <form id="reunionForm">
-                <!-- 재회 관련 질문들 -->
-                <div id="reunionQuestionsContainer"></div>
-
-                <button type="button" id="reunionNextButton" onclick="showNextReunionQuestion()">다음</button>
-                <button type="button" id="calculateReunionButton" style="display:none;" onclick="calculateReunion()">재회 확률 계산하기</button>
-            </form>
-
-            <div id="reunionResult" class="result"></div>
-            <div id="reunionAdvice" class="advice"></div>
+        <!-- 감정 일기 추가 -->
+        <div class="emotion-diary">
+            <h3>오늘의 감정 기록</h3>
+            <div class="diary-input">
+                <textarea id="diaryText" rows="4" placeholder="오늘의 감정을 기록하세요... 예: 오늘은 슬픔과 고독감을 느꼈다."></textarea>
+                <button type="button" onclick="saveDiary()">기록 저장</button>
+            </div>
+            <ul id="diaryList"></ul>
         </div>
 
         <!-- 추가 리소스 제공 -->
@@ -300,7 +293,6 @@
 
     <script>
         let currentQuestionIndex = 0;
-        let currentReunionQuestionIndex = 0;
 
         // 다크 모드 토글
         function toggleDarkMode() {
@@ -445,7 +437,6 @@
             } else {
                 document.getElementById("nextButton").style.display = 'none';
                 calculateTime();
-                showReunionSection(); // 재회 확률 계산 시작
             }
         }
 
@@ -470,7 +461,7 @@
         // 점수 계산
         function calculateScore(form) {
             let score = 0;
-            for (let i = 1; i <= 9; i++) {  // 설문 질문 수에 맞게 변경
+            for (let i = 1; i <= 18; i++) {  // 여전히 최대 18개의 질문에 대한 점수를 계산
                 const question = form['q' + i];
                 if (question) {
                     score += getSelectedValue(question);
@@ -574,6 +565,16 @@
                 diaryList.appendChild(newEntry);
                 document.getElementById('diaryText').value = '';  // 입력 초기화
 
+                let message = "";
+                if (diaryText.includes("슬픔") || diaryText.includes("상실감")) {
+                    message = "슬픔을 느끼는 것은 자연스러운 일입니다. 이 감정을 억누르지 말고 받아들이세요.";
+                } else if (diaryText.includes("불안") || diaryText.includes("두려움")) {
+                    message = "새로운 시작은 불안할 수 있습니다. 하지만 이 또한 지나가리라는 것을 기억하세요.";
+                }
+                if (message) {
+                    alert(message);
+                }
+
                 saveDiaryToLocalStorage(newEntry.innerText);
             }
         }
@@ -608,299 +609,6 @@
 
             // 진행 상태 업데이트
             document.getElementById('progressStatus').innerText = `질문 ${currentQuestionIndex + 1}/${questions.length}`;
-        }
-
-        // 재회 확률 계산 함수
-        function calculateReunion() {
-            const form = document.forms['reunionForm'];
-            let score = 0;
-
-            // 각 질문의 점수 합산
-            for (let i = 1; i <= 18; i++) {
-                const question = form['r' + i];
-                if (question) {
-                    if (question.length) {
-                        for (const option of question) {
-                            if (option.checked) {
-                                score += parseInt(option.value);
-                            }
-                        }
-                    } else if (question.checked) {
-                        score += parseInt(question.value);
-                    }
-                }
-            }
-
-            // 재회 확률 계산 및 결과 표시
-            let probability = getReunionProbability(score);
-            document.getElementById('reunionResult').innerText = `재회 확률: ${probability}%`;
-
-            // 각 확률에 따른 조언 제공
-            let advice = getReunionAdvice(probability);
-            document.getElementById('reunionAdvice').innerText = advice;
-        }
-
-        function getReunionProbability(score) {
-            // 점수에 따른 재회 확률 계산
-            if (score <= 100) {
-                return 20; // 낮은 확률
-            } else if (score <= 200) {
-                return 40; // 보통 확률
-            } else if (score <= 300) {
-                return 60; // 높은 확률
-            } else {
-                return 80; // 매우 높은 확률
-            }
-        }
-
-        function getReunionAdvice(probability) {
-            if (probability <= 20) {
-                return "현재 상황에서 재회 가능성은 낮습니다. 이 시기를 나를 돌아보고 성장하는 기회로 삼아보세요.";
-            } else if (probability <= 40) {
-                return "재회 가능성은 있지만, 쉽게 이루어지지는 않을 것입니다. 신중하게 접근하는 것이 중요합니다.";
-            } else if (probability <= 60) {
-                return "손에 잡힐 듯 말듯 답답하고 힘들 수 있어요.\n그러나 지금은 인내가 필요할 때입니다. 그 사람은 분명 나를 의식하고 있는 상황입니다. 그래서 연락을 하면 받아주긴 하겠지만, 태도가 긴가민가 하고, 반응도 그리 만족스럽진 않을 거에요. 재회를 위해서는 좀 더 강력한 한방이 필요합니다.";
-            } else {
-                return "재회 가능성이 높습니다! 상대방도 당신에게 긍정적인 감정을 갖고 있을 가능성이 큽니다. 자연스럽게 다가가면 좋은 결과를 얻을 수 있을 것입니다.";
-            }
-        }
-
-        // 설문 종료 후 재회 확률 계산 시작
-        function showReunionSection() {
-            document.getElementById('reunionSection').style.display = 'block';
-        }
-
-        // 진행 바 업데이트 (재회 확률 설문)
-        function updateReunionProgressBar() {
-            const questions = document.querySelectorAll('#reunionQuestionsContainer .question');
-            const progress = ((currentReunionQuestionIndex + 1) / questions.length) * 100;
-            document.getElementById('progress').style.width = progress + '%';
-
-            // 진행 상태 업데이트
-            document.getElementById('progressStatus').innerText = `재회 설문 ${currentReunionQuestionIndex + 1}/${questions.length}`;
-        }
-
-        // 재회 확률 설문 문항을 동적으로 생성
-        document.addEventListener("DOMContentLoaded", function () {
-            const reunionQuestions = [
-                {
-                    legend: "헤어진 지 얼마나 되었나요?",
-                    options: [
-                        { value: "10", label: "1개월 이하" },
-                        { value: "20", label: "1개월 이상 ~ 3달 이하" },
-                        { value: "30", label: "3개월 이상 ~ 6개월 이하" },
-                        { value: "40", label: "6개월 이상 ~ 1년 이하" },
-                        { value: "50", label: "1년 이상" },
-                    ],
-                },
-                {
-                    legend: "헤어지는 순간, 나는 어떻게 행동했나요?",
-                    options: [
-                        { value: "50", label: "헤어질 생각 없다면서 고집을 부렸다." },
-                        { value: "40", label: "미련이 남도록 잘 하겠다며 붙잡았다." },
-                        { value: "30", label: "왜 우리가 헤어지면 안되는지 조목조목 따졌다." },
-                        { value: "20", label: "알겠다면서 담담하게 침묵했다." },
-                        { value: "10", label: "쿨한 척 알겠다며 돌아섰다." },
-                        { value: "0", label: "나도 이제 만날 생각 없다고 얘기해주었다." },
-                    ],
-                },
-                {
-                    legend: "헤어진 후, 얼마나 연락을 주고 받았나요?",
-                    options: [
-                        { value: "0", label: "없음" },
-                        { value: "10", label: "1번" },
-                        { value: "20", label: "3번" },
-                        { value: "30", label: "5번" },
-                    ],
-                },
-                {
-                    legend: "둘의 기억이 남아있는 장소가 몇 곳이 있나요?",
-                    options: [
-                        { value: "10", label: "2 곳 이하" },
-                        { value: "20", label: "5 곳 이하" },
-                        { value: "30", label: "10 곳 이하" },
-                        { value: "40", label: "10 곳 이상" },
-                    ],
-                },
-                {
-                    legend: "서로에게 남아있는 연결점은?",
-                    options: [
-                        { value: "10", label: "카카오톡 친구", type: "checkbox" },
-                        { value: "10", label: "SNS 팔로우 상태", type: "checkbox" },
-                        { value: "20", label: "같은 직장, 학교에 있음", type: "checkbox" },
-                        { value: "20", label: "같은 모임, 단톡방이 있음", type: "checkbox" },
-                        { value: "20", label: "가까운 곳에 살고 있음 (직장 포함)", type: "checkbox" },
-                        { value: "10", label: "겹치는 단골 식당, 단골 매장이 있음", type: "checkbox" },
-                        { value: "10", label: "갚아야 할 돈 or 돌려줄 물건이 있음", type: "checkbox" },
-                    ],
-                },
-                {
-                    legend: "둘 사이에 아는 지인은 몇 명인가요? (연락 가능)",
-                    options: [
-                        { value: "0", label: "없음" },
-                        { value: "10", label: "1명" },
-                        { value: "20", label: "2명" },
-                        { value: "30", label: "3명" },
-                        { value: "40", label: "5명 이상" },
-                    ],
-                },
-                {
-                    legend: "상대의 현재 상황은 어떤가요? (연애 제외)",
-                    options: [
-                        { value: "30", label: "일 때문에 바쁘다." },
-                        { value: "20", label: "어떤 이유로 힘든 시기를 보내고 있다." },
-                        { value: "10", label: "자기 삶을 즐기고 있다." },
-                        { value: "20", label: "헤어지기 전과 똑같이 살고 있다." },
-                        { value: "0", label: "잘 모르겠다." },
-                    ],
-                },
-                {
-                    legend: "헤어진 이후, 내 삶이 얼마나 변했나요?",
-                    options: [
-                        { value: "50", label: "일도 손에 안잡히고, 힘들어서 아무 것도 하지 않았다.(술.폭식,거식,불면증,무기력 등)" },
-                        { value: "40", label: "슬픈 마음을 달래기 위해, 쉬면서 힐링하는데 집중했다." },
-                        { value: "30", label: "그 사람이 생각나지 않도록, 새로운 활동을 시작했다. (일, 여행, 모임, 운동 등)" },
-                        { value: "10", label: "어차피 헤어진 거, 새로운 사람을 실컷 만났다. (소개팅, 썸)" },
-                    ],
-                },
-                {
-                    legend: "헤어진 이후 내 카톡 프로필, SNS 상태는?",
-                    options: [
-                        { value: "10", label: "모든 사진 비공개" },
-                        { value: "20", label: "보란 듯이 잘 사는 모습 과시" },
-                        { value: "20", label: "가끔 근황만 올리기" },
-                        { value: "40", label: "다른 이성과 같이 있을 것 같은 사진을 올림" },
-                        { value: "30", label: "셀카를 자주 업뎃" },
-                        { value: "20", label: "힘든 티를 냄 (슬픈 노래, 감성 글귀 등)" },
-                        { value: "0", label: "새로 올린 사진 없음" },
-                        { value: "10", label: "일부러 나랑 관련없는 사진만 올림" },
-                    ],
-                },
-                {
-                    legend: "연락할 때, 애정표현을 해본 적 있나요?",
-                    options: [
-                        { value: "30", label: "항상 내 마음을 표현했음" },
-                        { value: "20", label: "가끔 분위기 좋을 때 했음" },
-                        { value: "10", label: "최대한 자제함" },
-                        { value: "0", label: "할 만한 상황이 온 적 없음" },
-                    ],
-                },
-                {
-                    legend: "연락할 때 '헤어진 당시의 상황'을 다시 얘기한 적 있나요?",
-                    options: [
-                        { value: "30", label: "연락할 때마다 얘기를 꺼냈음" },
-                        { value: "20", label: "대화 중 2번 이상 얘기한 적 있음" },
-                        { value: "10", label: "선톡으로 얘기를 꺼내 본 적 있음" },
-                        { value: "0", label: "최대한 자제 중" },
-                    ],
-                },
-                {
-                    legend: "연락할 때, 재회 이야기를 꺼낸 적 있나요?",
-                    options: [
-                        { value: "30", label: "연락할 때마다 얘기함" },
-                        { value: "20", label: "떠보듯이 얘기한 적 있음" },
-                        { value: "10", label: "대화는 했지만, 차마 꺼내지 못함" },
-                        { value: "0", label: "재회 얘기없이 은근한 관심만 표현" },
-                    ],
-                },
-                {
-                    legend: "연락 마무리를 누가 더 많이 했나요?",
-                    options: [
-                        { value: "30", label: "항상 내가 먼저" },
-                        { value: "20", label: "내가 한 적이 더 많음" },
-                        { value: "10", label: "상대가 한 적이 좀 더 많음" },
-                        { value: "0", label: "항상 상대가 먼저" },
-                    ],
-                },
-                {
-                    legend: "연락을 무시 당했을 때 나의 대처는?",
-                    options: [
-                        { value: "10", label: "한번 더 톡을 보낸다." },
-                        { value: "10", label: "연락을 무시하는 이유를 묻는다." },
-                        { value: "0", label: "더 이상 아무 것도 하지 않는다." },
-                        { value: "20", label: "며칠 있다 다른 얘기로 연락해본다." },
-                    ],
-                },
-                {
-                    legend: "연락했을 때 상대의 '긍정적인' 반응?",
-                    options: [
-                        { value: "10", label: "내 질문에 성실하게 대답", type: "checkbox" },
-                        { value: "10", label: "긍정적인(친절or친근) 말투", type: "checkbox" },
-                        { value: "20", label: "묻지도 않은 이야기를 꺼냄", type: "checkbox" },
-                        { value: "20", label: "종종 즉각적으로 답장이 옴", type: "checkbox" },
-                        { value: "20", label: "나의 근황에 대해 먼저 물어봄", type: "checkbox" },
-                        { value: "20", label: "나의 근황을 알고 있음", type: "checkbox" },
-                        { value: "30", label: "다시 만나 이야기 할 수 있음을 암시", type: "checkbox" },
-                        { value: "40", label: "다시 사귈 수 있음을 암시", type: "checkbox" },
-                    ],
-                },
-                {
-                    legend: "연락했을 때 상대의 '부정적인' 반응?",
-                    options: [
-                        { value: "0", label: "연락하지 말아달라고 함", type: "checkbox" },
-                        { value: "10", label: "답장은 오지만 단답", type: "checkbox" },
-                        { value: "20", label: "답장은 오지만 경계하는 말투", type: "checkbox" },
-                        { value: "20", label: "10시간 넘는 답장 텀, 3번 이상", type: "checkbox" },
-                        { value: "30", label: "연애 때와 달리 읽씹, 안읽씹을 자주 함", type: "checkbox" },
-                        { value: "30", label: "나를 원망하고 화를 냄", type: "checkbox" },
-                        { value: "20", label: "답장을 늦게 한 것에 변명 함", type: "checkbox" },
-                        { value: "20", label: "이별 당시 상황에 대해 얘기를 함", type: "checkbox" },
-                    ],
-                },
-            ];
-
-            const reunionQuestionsContainer = document.getElementById("reunionQuestionsContainer");
-
-            reunionQuestions.forEach((question, index) => {
-                const fieldset = document.createElement("fieldset");
-                fieldset.className = "question";
-                if (index === 0) fieldset.classList.add("active"); // 첫 번째 질문만 활성화
-
-                const legend = document.createElement("legend");
-                legend.textContent = question.legend;
-                fieldset.appendChild(legend);
-
-                question.options.forEach((option) => {
-                    const label = document.createElement("label");
-                    const input = document.createElement("input");
-                    input.type = option.type || "radio";
-                    input.name = "r" + (index + 1) + (option.type === "checkbox" ? "[]" : "");
-                    input.value = option.value;
-                    label.appendChild(input);
-                    label.appendChild(document.createTextNode(" " + option.label));
-                    fieldset.appendChild(label);
-                    fieldset.appendChild(document.createElement("br"));
-                });
-
-                reunionQuestionsContainer.appendChild(fieldset);
-            });
-
-            // 폼이 동적으로 추가된 후 진행 바도 업데이트
-            updateReunionProgressBar();
-        });
-
-        // 다음 재회 질문 표시
-        function showNextReunionQuestion() {
-            const questions = document.querySelectorAll('#reunionQuestionsContainer .question');
-            const currentQuestion = questions[currentReunionQuestionIndex];
-
-            // 선택이 안된 경우 알림
-            if (!currentQuestion.querySelector('input[type="radio"]:checked') && !currentQuestion.querySelector('input[type="checkbox"]:checked')) {
-                alert("질문에 답변을 선택해주세요.");
-                return;
-            }
-
-            // 현재 질문 숨기고 다음 질문 표시
-            currentQuestion.classList.remove('active');
-            currentReunionQuestionIndex++;
-
-            if (currentReunionQuestionIndex < questions.length) {
-                questions[currentReunionQuestionIndex].classList.add('active');
-                updateReunionProgressBar();
-            } else {
-                document.getElementById("reunionNextButton").style.display = 'none';
-                document.getElementById("calculateReunionButton").style.display = 'block';
-            }
         }
     </script>
 </body>
